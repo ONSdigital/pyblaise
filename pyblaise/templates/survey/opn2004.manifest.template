@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Manifest xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		  ID="{{ SURVEY_UUID }}"
+		  ManifestVersion="2.0"
+		  BlaiseVersion="5.6.5.2055"
+		  Kind="Instrument"
+		  DataCheckSum=""
+		  WithoutPages="false"
+		  Configuration="Development"
+		  Name="{{ SURVEY_NAME }}"
+		  LayoutSets="CAWI,CATI"
+		  DataEntrySettings="StrictInterviewing,StrictCati,FreeInterviewing,CheckedEditing"
+		  CatiRole="Main"
+		  WebDataEntryClient="MvcDebug"
+		  AppSupport="On"
+		  CariSettings=""
+		  Dependencies="57ec5f87-42f4-4763-b433-9c5241057fa3"
+		  xmlns="http://tempuri.org/manifest.xsd">
+  <Files>
+    <File Name="default.aspx" />
+    <File Name="global.asax" />
+    <File Name="main.771f7a7751bcfa3cabce.js" />
+    <File Name="polyfills-es5.d559a2daf74e09b27a41.js" />
+    <File Name="polyfills.bb86f0a992e2e18179a7.js" />
+    <File Name="runtime.3632ba57a9fa82aa6bbb.js" />
+    <File Name="styles.f272e01abeb1533176cd.js" />
+    <File Name="vendor.c12d920c2df345f562c0.js" />
+    <File Name="web.config" />
+
+    <File Name="opn2004a.badi" />
+    <File Name="opn2004a.bdbx" />
+    <File Name="opn2004a.bdix" />
+    <File Name="opn2004a.bmix" />
+    <File Name="opn2004a.btrx" />
+
+    <File Name="socialsurveytemplates.blrd" />
+    <File Name="assets\runtimeparameters.json" />
+    <File Name="bin\newtonsoft.json.dll" />
+    <File Name="bin\statneth.blaise.runtime.webapi.dll" />
+    <File Name="scripts\modernizr.min.js" />
+  </Files>
+  <Roles>
+    <Admin>
+      <Files />
+    </Admin>
+
+    <Data>
+      <Files>
+        <File Name="opn2004a.bmix" />
+        <File Name="opn2004a.bdix" />
+        <File Name="opn2004a.bdbx" />
+      </Files>
+    </Data>
+
+    <DataEntry>
+      <Files>
+        <File Name="opn2004a.bmix" />
+      </Files>
+    </DataEntry>
+
+    <Resource>
+      <Files>
+        <File Name="socialsurveytemplates.blrd" />
+      </Files>
+    </Resource>
+
+    <Web>
+      <Files>
+        <File Name="default.aspx" />
+        <File Name="global.asax" />
+        <File Name="main.771f7a7751bcfa3cabce.js" />
+        <File Name="polyfills-es5.d559a2daf74e09b27a41.js" />
+        <File Name="polyfills.bb86f0a992e2e18179a7.js" />
+        <File Name="runtime.3632ba57a9fa82aa6bbb.js" />
+        <File Name="styles.f272e01abeb1533176cd.js" />
+        <File Name="vendor.c12d920c2df345f562c0.js" />
+        <File Name="web.config" />
+        <File Name="assets\runtimeparameters.json" />
+        <File Name="bin\newtonsoft.json.dll" />
+        <File Name="scripts\modernizr.min.js" />
+      </Files>
+    </Web>
+  </Roles>
+
+  <RoleFilesList>
+    <RoleFiles Role="CATI">      <Files>    <File Name="opn2004a.btrx" />  </Files></RoleFiles>
+    <RoleFiles Role="CATI">      <Files>    <File Name="opn2004a.bmix" />  </Files></RoleFiles>
+    <RoleFiles Role="AUDITTRAIL">      <Files>    <File Name="opn2004a.badi" />  </Files></RoleFiles>
+  </RoleFilesList>
+
+  <RuntimeConfiguration>
+    <MetaFile Name="OPN2004A.bmix" />
+    <DataFile Name="OPN2004A.bdix" />
+    <ResourceFile Name="SocialSurveyTemplates.blrd" />
+    <AspStartPageFile Name="default.aspx" />
+    <InitialLayoutSetGroupName>CAWI</InitialLayoutSetGroupName>
+    <InitialLayoutSetName />
+    <InitialDataEntrySettingsName>StrictInterviewing</InitialDataEntrySettingsName>
+    <CatiSpecificationFile Name="OPN2004A.btrx" />
+    <AuditTrailFile Name="OPN2004A.badi" />
+    <AllowDownloadOverMeteredConnection>false</AllowDownloadOverMeteredConnection>
+    <SurveyRole>Survey</SurveyRole>
+  </RuntimeConfiguration>
+
+  <DeploymentConfiguration GeneratePages="false" RemoveSessions="false" HarmlessDataUpdate="Never">
+  <OverwriteDataFile>Never</OverwriteDataFile>
+  </DeploymentConfiguration>
+  
+  <Modes>
+  <Mode Name="CAWI" DataChecksum="749292572.1575518578.2643763670" />
+  <Mode Name="CATI" DataChecksum="3249934867.1478189997.440957705" />
+  </Modes>
+</Manifest>

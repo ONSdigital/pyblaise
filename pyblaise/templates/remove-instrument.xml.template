@@ -1,0 +1,15 @@
+{% include "file-header.xml.template" %}
+{% include "auth-header.xml.template" %}
+  <s:Body>
+    <RemoveInstrument xmlns="http://www.blaise.com/deploy/2013/03">
+      <instrument xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <DownloadType i:nil="true"/>
+        <InstallDate>0001-01-01T00:00:00</InstallDate>
+        <InstrumentId>{{ ID }}</InstrumentId>
+        <InstrumentName>{{ NAME }}</InstrumentName>
+        <ServerPark>{{ SERVERPARK }}</ServerPark>
+        <Status i:nil="true"/>
+      </instrument>
+    </RemoveInstrument>
+  </s:Body>
+{% include "file-footer.xml.template" %}

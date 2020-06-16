@@ -1,0 +1,11 @@
+{% include "file-header.xml.template" %}
+  <s:Body>
+    <RequestToken xmlns="http://www.blaise.com/security/2016/06">
+      <request xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <ClientId i:nil="true" />
+        <Password>{{ PASSWORD }}</Password>
+        <Username>{{ USERNAME }}</Username>
+      </request>
+    </RequestToken>
+  </s:Body>
+{% include "file-footer.xml.template" %}

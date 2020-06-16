@@ -1,0 +1,6 @@
+{% include "file-header.xml.template" %}
+{% include "auth-header.xml.template" %}
+  <s:Body>
+    <GetServerVersion xmlns="http://www.blaise.com/deploy/2019/06"/>
+  </s:Body>
+{% include "file-footer.xml.template" %}

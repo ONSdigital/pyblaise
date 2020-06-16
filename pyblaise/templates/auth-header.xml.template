@@ -1,0 +1,3 @@
+  <s:Header>
+    <Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer {{ TOKEN }}</Authorization>
+  </s:Header>

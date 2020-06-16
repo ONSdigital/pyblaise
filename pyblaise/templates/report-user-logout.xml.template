@@ -1,0 +1,8 @@
+{% include "file-header.xml.template" %}
+{% include "auth-header.xml.template" %}
+  <s:Body>
+    <ReportUserLogout xmlns="http://www.blaise.com/security/2016/06">
+      <userName>{{ USERNAME }}</userName>
+    </ReportUserLogout>
+  </s:Body>
+{% include "file-footer.xml.template" %}
