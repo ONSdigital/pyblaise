@@ -503,6 +503,9 @@ NB: the survey file contents must be the body of the POST request, do not use a 
 
 ## Blaise Role Setup
 
+Create a new role with a set of permissions.
+The server will respond with the `CreateRoleResult` token containing the `ID` of the new role.
+
 + `SOAPAction: "http://www.blaise.com/security/2016/06/ISecurityManagementService/GetRoles"`
     + request:
 ```
@@ -557,6 +560,16 @@ NB: the survey file contents must be the body of the POST request, do not use a 
         </Permissions>
       </role>
     </CreateRole>
+  </s:Body>
+</s:Envelope>
+```
+    + response:
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <CreateRoleResponse xmlns="http://www.blaise.com/security/2016/06">
+      <CreateRoleResult>ID-of-new-role</CreateRoleResult>
+    </CreateRoleResponse>
   </s:Body>
 </s:Envelope>
 ```

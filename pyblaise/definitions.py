@@ -76,6 +76,13 @@ operations = {
             "SOAPAction": "http://www.blaise.com/security/2016/06/ISecurityManagementService/ReportUserLogout"
         }
     },
+    "create-role": {
+        "template": "create-role.xml.template",
+        "path": "/Blaise/Security/Services/SecurityManagementService",
+        "headers": {
+            "SOAPAction": "http://www.blaise.com/security/2016/06/ISecurityManagementService/CreateRole"
+        }
+    }
 }
 
 default_headers = {

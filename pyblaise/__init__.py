@@ -1,4 +1,5 @@
-from .operations import (create_survey_manifest,
+from .operations import (create_role,
+                         create_survey_manifest,
                          create_survey_from_existing,
                          get_auth_token,
                          get_all_users,

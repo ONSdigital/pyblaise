@@ -211,3 +211,22 @@ def create_survey_from_existing(existing_survey_filename, survey_name):
       z_out.writestr(archive_name, manifest)
 
     return tmp_out.name, id
+
+
+def create_role(protocol, host, port, token, name, description, permissions):
+  """
+  create a role and add selected permissions
+  name: name of the role
+  description: description of the role (can be empty)
+  permissions: list of kv pairs [{action: permitted}, {action: permitted}...]
+               i.e., the name of the action and a boolean indicating whether it is permitted.
+
+  return (status_code, role_id)
+  """
+
+  R = basic_soap_request("create-role", protocol, host, port,
+        TOKEN=token, NAME=name, DESCRIPTION=description, PERMISSIONS=permissions)
+
+  role_id = int(parse_response_for_tag_contents(R.text, "CreateRoleResult"))
+
+  return R.status_code, role_id
