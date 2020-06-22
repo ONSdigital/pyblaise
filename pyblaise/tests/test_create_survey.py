@@ -17,6 +17,6 @@ def test_create_survey_manifest_returns_uuid():
 def test_create_survey_manifest_contains_name():
   from time import time
   from hashlib import md5
-  r = md5(str(time())).hexdigest()
+  r = md5(str(time()).encode()).hexdigest()
   manifest, _ = create_survey_manifest(r)
   assert r in manifest

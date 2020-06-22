@@ -6,8 +6,8 @@ def test_parse_get_auth_token_response():
   from hashlib import md5
   from time import time
 
-  e0 = ".".join([md5(str(time())).hexdigest() for _ in range(3)])
-  e1 = ".".join([md5(str(time())).hexdigest() for _ in range(3)])
+  e0 = ".".join([md5(str(time()).encode()).hexdigest() for _ in range(3)])
+  e1 = ".".join([md5(str(time()).encode()).hexdigest() for _ in range(3)])
 
   d = """
   <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
