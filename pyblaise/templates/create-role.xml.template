@@ -1,0 +1,20 @@
+{% include "file-header.xml.template" %}
+{% include "auth-header.xml.template" %}
+  <s:Body>
+    <CreateRole xmlns="http://www.blaise.com/security/2016/06">
+      <role xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <Description>{{ DESCRIPTION }}</Description>
+        <Id>0</Id>
+        <Name>{{ NAME }}</Name>
+        <Permissions>
+          {% for key, value in PERMISSIONS.items() %}
+          <ActionPermission>
+            <Action>{{ key }}</Action>
+            <Permission>{{ value }}</Permission>
+          </ActionPermission>
+          {% endfor %}
+        </Permissions>
+      </role>
+    </CreateRole>
+  </s:Body>
+{% include "file-footer.xml.template" %}
