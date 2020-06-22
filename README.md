@@ -308,7 +308,15 @@ The `SOAPAction` header in the HTTP Request headers needs to match the payload. 
 <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><GetServerParkConfigurations201906Response xmlns="http://www.blaise.com/configuration/2019/06"><GetServerParkConfigurations201906Result xmlns:i="http://www.w3.org/2001/XMLSchema-instance"/></GetServerParkConfigurations201906Response></s:Body></s:Envelope>
 ```
 + `SOAPAction: "http://www.blaise.com/configuration/2019/06/IConfigurationService/GetAllConfigurations201906"` ?
-    + `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><GetAllConfigurations201906Response xmlns="http://www.blaise.com/configuration/2019/06"><GetAllConfigurations201906Result xmlns:i="http://www.w3.org/2001/XMLSchema-instance"/></GetAllConfigurations201906Response></s:Body></s:Envelope>`
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <GetAllConfigurations201906Response xmlns="http://www.blaise.com/configuration/2019/06">
+      <GetAllConfigurations201906Result xmlns:i="http://www.w3.org/2001/XMLSchema-instance"/>
+    </GetAllConfigurations201906Response>
+  </s:Body>
+</s:Envelope>
+```
 
 ## OAuth Token Invalidation
 
@@ -327,28 +335,150 @@ Sometimes will appear as a `500 Internal Server Error` with the content:
 ## OAuth Token Refresh
 
 + `SOAPAction: "http://www.blaise.com/security/2016/06/ISecurityTokenService/RefreshToken"` post the refresh token to obtain new access token
-    + `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><RefreshTokenResponse xmlns="http://www.blaise.com/security/2016/06"><RefreshTokenResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><AccessToken>xxx</AccessToken><RefreshToken>xxx</RefreshToken></RefreshTokenResult></RefreshTokenResponse></s:Body></s:Envelope>`
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <RefreshTokenResponse xmlns="http://www.blaise.com/security/2016/06">
+      <RefreshTokenResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <AccessToken>xxx</AccessToken>
+        <RefreshToken>xxx</RefreshToken>
+      </RefreshTokenResult>
+    </RefreshTokenResponse>
+  </s:Body>
+</s:Envelope>
+```
 
 
 ## Blaise Server Manager Survey Upload
 
+Survey upload requires that the archive (`.bpkg` or `.zip`) contiains a `.manifest` file.
+This file should list the files in the archive, ID of the survey and title of the survey.
+The ID field should be a UUID which matches an expected pattern (FIXME: fill in this pattern, sorry reader...).
+Valid UUID strings can be created with the python library UUID as:
+```python
+from uuid import uuid4
+
+id = str(uuid4())
+print(id)
+```
+
 NB: the survey file contents must be the body of the POST request, do not use a multipart file encoding.
 
 + `SOAPAction: "http://www.blaise.com/configuration/2013/03/IConfigurationService/GetInstrumentConfiguration"` (no idea where this `id` comes from)
-    + request: `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Header><Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer xxx</Authorization></s:Header><s:Body><GetInstrumentConfiguration xmlns="http://www.blaise.com/configuration/2013/03"><id>8a2d121e-6dba-4bf5-a6bf-d1b0e6c36160</id></GetInstrumentConfiguration></s:Body></s:Envelope>`
-    + response: `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><GetInstrumentConfigurationResponse xmlns="http://www.blaise.com/configuration/2013/03"><GetInstrumentConfigurationResult i:nil="true" xmlns:a="http://www.blaise.com/configuration/2013/06" xmlns:i="http://www.w3.org/2001/XMLSchema-instance"/></GetInstrumentConfigurationResponse></s:Body></s:Envelope>`
+    + request:
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer xxx</Authorization>
+  </s:Header>
+  <s:Body>
+    <GetInstrumentConfiguration xmlns="http://www.blaise.com/configuration/2013/03">
+      <id>8a2d121e-6dba-4bf5-a6bf-d1b0e6c36160</id>
+    </GetInstrumentConfiguration>
+  </s:Body>
+</s:Envelope>
+```
+    + response:
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <GetInstrumentConfigurationResponse xmlns="http://www.blaise.com/configuration/2013/03">
+      <GetInstrumentConfigurationResult i:nil="true" xmlns:a="http://www.blaise.com/configuration/2013/06" xmlns:i="http://www.w3.org/2001/XMLSchema-instance"/>
+    </GetInstrumentConfigurationResponse>
+  </s:Body>
+</s:Envelope>
+```
 
 + `SOAPAction: "http://www.blaise.com/configuration/2017/11/IConfigurationService/GetAllConfigurations201711"`
-    + request: `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Header><Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer xxx</Authorization></s:Header><s:Body><GetAllConfigurations201711 xmlns="http://www.blaise.com/configuration/2017/11"/></s:Body></s:Envelope>`
-    + response: `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><GetAllConfigurations201711Response xmlns="http://www.blaise.com/configuration/2017/11"><GetAllConfigurations201711Result xmlns:i="http://www.w3.org/2001/XMLSchema-instance"/></GetAllConfigurations201711Response></s:Body></s:Envelope>`
+    + request:
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer xxx</Authorization>
+  </s:Header>
+  <s:Body>
+    <GetAllConfigurations201711 xmlns="http://www.blaise.com/configuration/2017/11"/>
+  </s:Body>
+</s:Envelope>
+```
+    + response:
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <GetAllConfigurations201711Response xmlns="http://www.blaise.com/configuration/2017/11">
+      <GetAllConfigurations201711Result xmlns:i="http://www.w3.org/2001/XMLSchema-instance"/>
+    </GetAllConfigurations201711Response>
+  </s:Body>
+</s:Envelope>
+```
 
 + `POST /Blaise/Administer/Services/REST/ftf/OPN2004A/8a2d121e-6dba-4bf5-a6bf-d1b0e6c36160/uploadpackage`
     + request: `Content-Type: application\r\nContent-Length: 7664\r\nAuthorization: Bearer xxx\r\n`
     + response: `<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</int>`
 
 + `SOAPAction: "http://www.blaise.com/configuration/2019/06/IConfigurationService/GetInstrumentConfiguration201906"`
-    + request: `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Header><Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer xxx</Authorization></s:Header><s:Body><GetInstrumentConfiguration201906 xmlns="http://www.blaise.com/configuration/2019/06"><id>8a2d121e-6dba-4bf5-a6bf-d1b0e6c36160</id></GetInstrumentConfiguration201906></s:Body></s:Envelope>`
-    + response: `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><GetInstrumentConfiguration201906Response xmlns="http://www.blaise.com/configuration/2019/06"><GetInstrumentConfiguration201906Result xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><ActionsSetupFileName i:nil="true"/><AllowDownloadOverMeteredConnection>false</AllowDownloadOverMeteredConnection><AuditTrailFileName i:nil="true"/><BlaiseVersion i:nil="true"/><CatiRole i:nil="true"/><CatiSpecificationFileName i:nil="true"/><DataChecksum i:nil="true"/><DataFileName>INSTALLATION IN PROGRESS</DataFileName><Dependencies xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/><DownloadInterceptorSetupFileName i:nil="true"/><InitialAppCariSetting i:nil="true"/><InitialDataEntrySettingsName>INSTALLATION IN PROGRESS</InitialDataEntrySettingsName><InitialLayoutSetGroupName>INSTALLATION IN PROGRESS</InitialLayoutSetGroupName><InitialLayoutSetName i:nil="true"/><InstallDate>2020-06-05T15:34:09.2039904+01:00</InstallDate><InstrumentId>8a2d121e-6dba-4bf5-a6bf-d1b0e6c36160</InstrumentId><InstrumentName>OPN2004A</InstrumentName><LauncherId i:nil="true"/><MainInstrumentId i:nil="true"/><MetaFileName>INSTALLATION IN PROGRESS</MetaFileName><Modes xmlns:a="http://www.blaise.com/configuration/2015/11"/><PackageFileName i:nil="true"/><ResourceFileName>INSTALLATION IN PROGRESS</ResourceFileName><ServerParkName>ftf</ServerParkName><SessionFileName i:nil="true"/><SetupFileName i:nil="true"/><SilverlightApplicationFileName>INSTALLATION IN PROGRESS</SilverlightApplicationFileName><StartCondition i:nil="true"/><StartPageFileName>INSTALLATION IN PROGRESS</StartPageFileName><Status>Installing</Status><StatusInfo i:nil="true"/><SurveyRole i:nil="true"/><SurveyRoot>opn2004a</SurveyRoot><ToWhomField i:nil="true"/><Version>1</Version><WaveName i:nil="true"/><WebDataEntryClient i:nil="true"/><WriteInterceptorSetupFileName i:nil="true"/></GetInstrumentConfiguration201906Result></GetInstrumentConfiguration201906Response></s:Body></s:Envelope>`
+    + request:
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer xxx</Authorization>
+  </s:Header>
+  <s:Body>
+    <GetInstrumentConfiguration201906 xmlns="http://www.blaise.com/configuration/2019/06">
+      <id>8a2d121e-6dba-4bf5-a6bf-d1b0e6c36160</id>
+    </GetInstrumentConfiguration201906>
+  </s:Body>
+</s:Envelope>
+```
+
+    + response:
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <GetInstrumentConfiguration201906Response xmlns="http://www.blaise.com/configuration/2019/06">
+      <GetInstrumentConfiguration201906Result xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <ActionsSetupFileName i:nil="true"/>
+        <AllowDownloadOverMeteredConnection>false</AllowDownloadOverMeteredConnection>
+        <AuditTrailFileName i:nil="true"/>
+        <BlaiseVersion i:nil="true"/>
+        <CatiRole i:nil="true"/>
+        <CatiSpecificationFileName i:nil="true"/>
+        <DataChecksum i:nil="true"/>
+        <DataFileName>INSTALLATION IN PROGRESS</DataFileName>
+        <Dependencies xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+        <DownloadInterceptorSetupFileName i:nil="true"/>
+        <InitialAppCariSetting i:nil="true"/>
+        <InitialDataEntrySettingsName>INSTALLATION IN PROGRESS</InitialDataEntrySettingsName>
+        <InitialLayoutSetGroupName>INSTALLATION IN PROGRESS</InitialLayoutSetGroupName>
+        <InitialLayoutSetName i:nil="true"/>
+        <InstallDate>2020-06-05T15:34:09.2039904+01:00</InstallDate>
+        <InstrumentId>8a2d121e-6dba-4bf5-a6bf-d1b0e6c36160</InstrumentId>
+        <InstrumentName>OPN2004A</InstrumentName>
+        <LauncherId i:nil="true"/>
+        <MainInstrumentId i:nil="true"/>
+        <MetaFileName>INSTALLATION IN PROGRESS</MetaFileName>
+        <Modes xmlns:a="http://www.blaise.com/configuration/2015/11"/>
+        <PackageFileName i:nil="true"/>
+        <ResourceFileName>INSTALLATION IN PROGRESS</ResourceFileName>
+        <ServerParkName>ftf</ServerParkName>
+        <SessionFileName i:nil="true"/>
+        <SetupFileName i:nil="true"/>
+        <SilverlightApplicationFileName>INSTALLATION IN PROGRESS</SilverlightApplicationFileName>
+        <StartCondition i:nil="true"/>
+        <StartPageFileName>INSTALLATION IN PROGRESS</StartPageFileName>
+        <Status>Installing</Status>
+        <StatusInfo i:nil="true"/>
+        <SurveyRole i:nil="true"/>
+        <SurveyRoot>opn2004a</SurveyRoot>
+        <ToWhomField i:nil="true"/><Version>1</Version>
+        <WaveName i:nil="true"/>
+        <WebDataEntryClient i:nil="true"/>
+        <WriteInterceptorSetupFileName i:nil="true"/>
+      </GetInstrumentConfiguration201906Result>
+    </GetInstrumentConfiguration201906Response>
+  </s:Body>
+</s:Envelope>
+```
 
 + `SOAPAction: "http://www.blaise.com/configuration/2019/06/IConfigurationService/GetInstrumentConfiguration201906"` (repeated)
     + request: `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Header><Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer xxx</Authorization></s:Header><s:Body><GetInstrumentConfiguration201906 xmlns="http://www.blaise.com/configuration/2019/06"><id>8a2d121e-6dba-4bf5-a6bf-d1b0e6c36160</id></GetInstrumentConfiguration201906></s:Body></s:Envelope>`
