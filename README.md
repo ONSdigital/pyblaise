@@ -501,6 +501,67 @@ NB: the survey file contents must be the body of the POST request, do not use a 
     + response: `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><UpdateServerParkDefinition201906Response xmlns="http://www.blaise.com/deploy/2019/06"><UpdateServerParkDefinition201906Result xmlns:a="http://www.blaise.com/deploy/2013/03" xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><a:Message>Operation success</a:Message><a:Statuscode>0</a:Statuscode></UpdateServerParkDefinition201906Result></UpdateServerParkDefinition201906Response></s:Body></s:Envelope>`
 
 
+## Blaise Role Setup
+
++ `SOAPAction: "http://www.blaise.com/security/2016/06/ISecurityManagementService/GetRoles"`
+    + request:
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer xxx</Authorization>
+  </s:Header>
+  <s:Body>
+    <GetRoles xmlns="http://www.blaise.com/security/2016/06"/>
+  </s:Body>
+</s:Envelope>
+```
+    + response:
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <GetRolesResponse xmlns="http://www.blaise.com/security/2016/06">
+      <GetRolesResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance"/>
+    </GetRolesResponse>
+  </s:Body>
+</s:Envelope>
+```
+
++ `SOAPAction: "http://www.blaise.com/security/2016/06/ISecurityManagementService/CreateRole"`
+    + request:
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer xxx</Authorization>
+  </s:Header>
+  <s:Body>
+    <CreateRole xmlns="http://www.blaise.com/security/2016/06">
+      <role xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <Description>This is my funky new role</Description>
+        <Id>0</Id>
+        <Name>ROle Funky</Name>
+        <Permissions>
+          <ActionPermission><Action>user.createuser</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>user.updateuser</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>user.removeuser</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>CATI</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>CATI.setcatispecification</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>CATI.setgeneralparameters</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>CATI.setgeneralparameters.setsurveydescription</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>CATI.setappointmentparameters</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>CATI.setappointmentparameters.setappointmentbuffer</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>CATI.setappointmentparameters.setkeeptimeofexpiredappointment</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>CATI.setappointmentparameters.settreatexpiredappointmentasmedium</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>CATI.setdaybatchparameters</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>CATI.setdaybatchparameters.setdaybatchsize</Action><Permission>1</Permission></ActionPermission>
+          <ActionPermission><Action>CATI.setdaybatchparameters.setmaxnumberofcalls</Action><Permission>1</Permission></ActionPermission>
+        </Permissions>
+      </role>
+    </CreateRole>
+  </s:Body>
+</s:Envelope>
+```
+
+
 # Protocol Sniffing Process
 
 + Setup a Blaise VM on a HTTP connection __NOT__ HTTPS.
