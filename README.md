@@ -633,6 +633,119 @@ The server will respond with the `CreateRoleResult` token containing the `ID` of
 </s:Envelope>
 ```
 
+## Blaise Role Update
+To update a role, send the Update Role message and include *ALL* permissions, not just the change set.
+
+`SOAPAction: "http://www.blaise.com/security/2016/06/ISecurityManagementService/UpdateRole"`
+  + request `POST /Blaise/Security/Services/SecurityManagementService HTTP/1.1`
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer xxx</Authorization>
+  </s:Header>
+  <s:Body>
+    <UpdateRole xmlns="http://www.blaise.com/security/2016/06">
+      <role xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <Description>none</Description>
+        <Id>3</Id>
+        <Name>test-role-001</Name>
+        <Permissions>
+          <ActionPermission>
+            <Action>Root</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>Deployment</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>Deployment.ServerParkManagement</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>UserManagement</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>user.createuser</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>user.updateuser</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>user.removeuser</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>user.createrole</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>user.updaterole</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>user.removerole</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>user.adsync</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>SkillManagement</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>user.createskill</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>user.updateskill</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>user.removeskill</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>user.updateuserskill</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>CATI</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>CATI.setcatispecification</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>CATI.setgeneralparameters</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+          <ActionPermission>
+            <Action>CATI.setgeneralparameters.setsurveydescription</Action>
+            <Permission>1</Permission>
+          </ActionPermission>
+        </Permissions>
+      </role>
+    </UpdateRole>
+  </s:Body>
+</s:Envelope>
+```
+
+  + response
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<UpdateRoleResponse xmlns="http://www.blaise.com/security/2016/06"/>
+	</s:Body>
+</s:Envelope>
+```
+
 
 # Protocol Sniffing Process
 
