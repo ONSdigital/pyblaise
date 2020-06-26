@@ -1,0 +1,2 @@
+class CreateRoleFailed(Exception):
+  pass

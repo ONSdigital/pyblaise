@@ -14,3 +14,7 @@ from .operations import (create_role,
                          report_user_logout)
 
 from .upload_survey import upload_survey
+
+from .exceptions import *
+
+from .blaise import Blaise
