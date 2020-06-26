@@ -1,3 +1,5 @@
+import logging
+
 from .soap_utils import (create_soap_from_template,
                          basic_soap_request,
                          parse_response_for_tag,
@@ -5,9 +7,14 @@ from .soap_utils import (create_soap_from_template,
                          parse_response_for_tag_contents,
                          parse_response_for_tags_contents)
 
+from .exceptions import *
+
+logger = logging.getLogger(__name__)
+
 
 def get_auth_token(protocol, host, port, username, password):
   R = basic_soap_request("request-token", protocol, host, port, USERNAME=username, PASSWORD=password)
+  logger.debug(R.text)
   token = parse_response_for_tag_contents(R.text, "AccessToken")
   return R.status_code, token
 
@@ -15,6 +22,7 @@ def get_auth_token(protocol, host, port, username, password):
 
 def get_all_users(protocol, host, port, token):
   R = basic_soap_request("get-all-users", protocol, host, port, TOKEN=token)
+  logger.debug(R.text)
   has_users = parse_response_for_tag(R.text, "GetAllUsers201812Result")
   users = []
 
@@ -22,13 +30,14 @@ def get_all_users(protocol, host, port, token):
 
 def is_interactive_connection_allowed(protocol, host, port, token):
   R = basic_soap_request("is-interactive-connection-allowed", protocol, host, port, TOKEN=token)
+  logger.debug(R.text)
   retval = parse_response_for_tag_contents(R.text, "IsInteractiveConnectionAllowedResult")
   return R.status_code, retval
 
 
 def get_list_of_instruments(protocol, host, port, token):
   R = basic_soap_request("get-list-of-instruments", protocol, host, port, TOKEN=token)
-
+  logger.debug(R.text)
   results = parse_response_for_tag_contents(R.text, "GetListOfInstrumentsResult")
   instruments = parse_response_for_tags_contents(results, "InstrumentMeta")
 
@@ -48,12 +57,60 @@ def get_list_of_instruments(protocol, host, port, token):
 
 
 def get_roles(protocol, host, port, token):
+  """read the roles from the server response.
+  roles is an array and contains 'id', 'name', 'description' and 'permissions' fields.
+  'permissions' is an array of permissions granted to that role.
+  the XML actually responds with a '1' value for granted roles, but I've never
+  seen a '0' value (for denied permission?).
+  The interface below only returns the list of permissions on the role, not the 1 value.
+  A guard checks that the value is '1' incase we ever get some weird info back
+
+  return value is:
+  (http_status_code, dict({"id":str, "name":str, "description":str, "permissions":[]})
+  """
   R = basic_soap_request("get-roles", protocol, host, port, TOKEN=token)
+  logger.debug(R.text)
 
-  has_roles = parse_response_for_tag(R.text, "GetSkillsResponse")
-  roles = []
+  has_tag = parse_response_for_tag(R.text, "GetRolesResult")
 
-  return R.status_code, roles
+  if has_tag is False:
+    logger.debug("could not find tag 'GetRolesResult'")
+    return R.status_code, []
+
+  results = parse_response_for_tag_contents(R.text, "GetRolesResult")
+
+  if results is None:
+    logger.debug("empty results returned in GetRolesResult")
+    return R.status_code, []
+
+  roles = parse_response_for_tags_contents(results, "Role")
+
+  role_defs = []
+
+  for idx, role in enumerate(roles):
+    logger.debug("processing role '%i'" % idx)
+
+    # parse the role info
+    role_def = {"id": parse_response_for_tag_contents(role, "Id"),
+                "name": parse_response_for_tag_contents(role, "Name"),
+                "description": parse_response_for_tag_contents(role, "Description")
+                }
+
+    # parse the permissions
+    permissions = parse_response_for_tag_contents(role, "Permissions")
+    actions = parse_response_for_tags_contents(permissions, "ActionPermission")
+    permission_names = [parse_response_for_tag_contents(action, "Action") for action in actions]
+
+    # sanity check that all permissions have the value '1'
+    permission_values = [parse_response_for_tag_contents(action, "Permission") for action in actions]
+    assert all([x == "1" for x in permission_values]), "ERR: Not all permission values are '1': '%s'" % str(zip(permission_names, permission_values))
+
+    role_def["permissions"] = permission_names
+
+    # append
+    role_defs.append(role_def)
+
+  return R.status_code, role_defs
 
 
 def get_server_park_definitions(protocol, host, port, token):
@@ -84,7 +141,7 @@ def get_server_park_definitions(protocol, host, port, token):
   """
   R = basic_soap_request("get-all-server-park-definitions",
           protocol, host, port, TOKEN=token)
-
+  logger.debug(R.text)
   has_tag = parse_response_for_tag(R.text, "GetAllServerParkDefinitions201906Result")
 
   if has_tag is False:
@@ -109,7 +166,7 @@ def get_server_park_definitions(protocol, host, port, token):
 
 def get_server_version(protocol, host, port, token):
   R = basic_soap_request("get-server-version", protocol, host, port, TOKEN=token)
-
+  logger.debug(R.text)
   server_version = parse_response_for_tag_contents(R.text, "GetServerVersionResult")
 
   if server_version is None:
@@ -127,7 +184,7 @@ def get_server_version(protocol, host, port, token):
 
 def get_skills(protocol, host, port, token):
   R = basic_soap_request("get-skills", protocol, host, port, TOKEN=token)
-
+  logger.debug(R.text)
   has_skills = parse_response_for_tag(R.text, "GetSkillsResponse")
   skills = []
 
@@ -136,6 +193,7 @@ def get_skills(protocol, host, port, token):
 
 def get_version(protocol, host, port, token):
   R = basic_soap_request("get-version", protocol, host, port, TOKEN=token)
+  logger.debug(R.text)
 
   version = parse_response_for_tag_contents(R.text, "GetVersionResponseResponse")
 
@@ -145,6 +203,7 @@ def get_version(protocol, host, port, token):
 def remove_instrument(protocol, host, port, token, id, name, server_park):
   R = basic_soap_request("remove-instrument", protocol, host, port,
          TOKEN=token, ID=id, NAME=name, SERVERPARK=server_park)
+  logger.debug(R.text)
 
   # parse
   removed = parse_response_for_tag_contents(R.text, "RemoveInstrumentResult")
@@ -160,6 +219,7 @@ def remove_instrument(protocol, host, port, token, id, name, server_park):
 def report_user_logout(protocol, host, port, token, username):
   R = basic_soap_request("report-user-logout", protocol, host, port,
          TOKEN=token, USERNAME=username)
+  logger.debug(R.text)
 
   logged_out = parse_response_for_tag(R.text, "ReportUserLogoutResponse")
 
@@ -226,7 +286,11 @@ def create_role(protocol, host, port, token, name, description, permissions):
 
   R = basic_soap_request("create-role", protocol, host, port,
         TOKEN=token, NAME=name, DESCRIPTION=description, PERMISSIONS=permissions)
+  logger.debug(R.text)
 
-  role_id = int(parse_response_for_tag_contents(R.text, "CreateRoleResult"))
+  role_id = parse_response_for_tag_contents(R.text, "CreateRoleResult")
 
-  return R.status_code, role_id
+  if role_id is None:
+    raise CreateRoleFailed
+
+  return R.status_code, int(role_id)

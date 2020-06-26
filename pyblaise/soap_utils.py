@@ -1,3 +1,4 @@
+import logging
 import re
 import requests
 from os.path import join, dirname
@@ -6,6 +7,9 @@ from jinja2 import Environment, FileSystemLoader, PackageLoader, select_autoesca
 from jinja2 import StrictUndefined
 
 from .definitions import operations, default_headers
+
+
+logger = logging.getLogger(__name__)
 
 
 TEMPLATE_DIR = "templates"
@@ -42,11 +46,14 @@ def parse_response_for_tags_contents(response, tagname):
   <a><b>c</b><b>d</b><b>e</b></a>
   the method will yield each tag contents in order of appearance
   """
+
+  logger.debug("searching for '%s[%s]' in '%s[%s]'" % (tagname, str(type(tagname)), response, str(type(response))))
   contents = re.findall("<%s.*?>(.*?)</%s>" % (tagname, tagname),
                         response,
                         re.DOTALL | re.MULTILINE)
 
   for content in contents:
+    logger.debug("found: '%s'" % content)
     yield content
 
 
@@ -54,7 +61,15 @@ def parse_response_for_tag_contents(response, tagname):
   """
   returns the contents of the first xml tag matching tagname.
   """
-  return next(parse_response_for_tags_contents(response, tagname))
+  x = parse_response_for_tags_contents(response, tagname)
+
+  logger.debug("parse response found: '%s'" % str(x))
+
+  # return the first item from the generator
+  try:
+    return next(x)
+  except StopIteration:
+    return None
 
 
 def parse_response_for_tag(response, tagname):
