@@ -71,21 +71,21 @@ def get_roles(protocol, host, port, token):
   R = basic_soap_request("get-roles", protocol, host, port, TOKEN=token)
   logger.debug(R.text)
 
+  role_definitions = {}
+
   has_tag = parse_response_for_tag(R.text, "GetRolesResult")
 
   if has_tag is False:
     logger.debug("could not find tag 'GetRolesResult'")
-    return R.status_code, []
+    return R.status_code, role_definitions
 
   results = parse_response_for_tag_contents(R.text, "GetRolesResult")
 
   if results is None:
     logger.debug("empty results returned in GetRolesResult")
-    return R.status_code, []
+    return R.status_code, role_definitions
 
   roles = parse_response_for_tags_contents(results, "Role")
-
-  role_defs = {}
 
   for idx, role in enumerate(roles):
     logger.debug("processing role '%i'" % idx)
@@ -105,9 +105,9 @@ def get_roles(protocol, host, port, token):
     assert all([x == "1" for x in permission_values]), "ERR: Not all permission values are '1': '%s'" % str(zip(permission_names, permission_values))
 
     # append
-    role_defs.update({role_name: {"id": role_id, "description": role_desc, "permissions": permission_names}})
+    role_definitions.update({role_name: {"id": role_id, "description": role_desc, "permissions": permission_names}})
 
-  return R.status_code, role_defs
+  return R.status_code, role_definitions
 
 
 def get_server_park_definitions(protocol, host, port, token):

@@ -93,6 +93,9 @@ def build_uri(protocol, host, port, path):
 
 
 def basic_soap_request(operation, protocol, host, port, **kwargs):
+  """construct a soap request from a jinja template
+     ¯\_(ツ)_/¯
+  """
   op = operations[operation]
 
   data = create_soap_from_template(op["template"], **kwargs)
@@ -101,8 +104,15 @@ def basic_soap_request(operation, protocol, host, port, **kwargs):
   headers.update(default_headers)
   headers.update(op["headers"])
 
-  R = requests.post(build_uri(protocol, host, port, op["path"]),
-                    headers=headers,
-                    data=data)
+  request = requests.Request("POST",
+                              build_uri(protocol, host, port, op["path"]),
+                              headers=headers,
+                              data=data)
 
-  return R
+  R = request.prepare()
+
+  logger.trace(R.method, R.url, str(R.headers), str(R.body))
+
+  # FIXME: maintain a session object for keepalive?
+  S = requests.session()
+  return S.send(R)
