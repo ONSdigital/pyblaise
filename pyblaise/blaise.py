@@ -71,18 +71,20 @@ class Blaise:
     returns: id of the created role
     throws: CreateRoleFailed (usually because a role with the name already exists)
     """
-    return create_role(**self.connection_info,
-                       token=self.token,
-                       name=name,
-                       description=description,
-                       permissions=permissions)
+    _, role_id = create_role(**self.connection_info,
+                             token=self.token,
+                             name=name,
+                             description=description,
+                             permissions=permissions)
+    return role_id
 
 
   def roles(self):
     """get a list of roles from the server
-    returns: list of dicts ({"id": string, "name": string, "description": string, "permissions": list of strings})
+    returns: dict of roles indexed by name ({role_name: {"id": string, "description": string, "permissions": list of strings}})
     """
-    return get_roles(**self.connection_info, token=self.token)
+    _, roles = get_roles(**self.connection_info, token=self.token)
+    return roles
 
 
   def users(self):

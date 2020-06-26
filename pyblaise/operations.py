@@ -66,7 +66,7 @@ def get_roles(protocol, host, port, token):
   A guard checks that the value is '1' incase we ever get some weird info back
 
   return value is:
-  (http_status_code, dict({"id":str, "name":str, "description":str, "permissions":[]})
+  (http_status_code, dict({role_name: {"id":str, "description":str, "permissions":[]}})
   """
   R = basic_soap_request("get-roles", protocol, host, port, TOKEN=token)
   logger.debug(R.text)
@@ -85,16 +85,15 @@ def get_roles(protocol, host, port, token):
 
   roles = parse_response_for_tags_contents(results, "Role")
 
-  role_defs = []
+  role_defs = {}
 
   for idx, role in enumerate(roles):
     logger.debug("processing role '%i'" % idx)
 
     # parse the role info
-    role_def = {"id": parse_response_for_tag_contents(role, "Id"),
-                "name": parse_response_for_tag_contents(role, "Name"),
-                "description": parse_response_for_tag_contents(role, "Description")
-                }
+    role_id = parse_response_for_tag_contents(role, "Id")
+    role_name = parse_response_for_tag_contents(role, "Name")
+    role_desc = parse_response_for_tag_contents(role, "Description")
 
     # parse the permissions
     permissions = parse_response_for_tag_contents(role, "Permissions")
@@ -105,10 +104,8 @@ def get_roles(protocol, host, port, token):
     permission_values = [parse_response_for_tag_contents(action, "Permission") for action in actions]
     assert all([x == "1" for x in permission_values]), "ERR: Not all permission values are '1': '%s'" % str(zip(permission_names, permission_values))
 
-    role_def["permissions"] = permission_names
-
     # append
-    role_defs.append(role_def)
+    role_defs.update({role_name: {"id": role_id, "description": role_desc, "permissions": permission_names}})
 
   return R.status_code, role_defs
 
