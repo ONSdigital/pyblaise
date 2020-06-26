@@ -574,6 +574,65 @@ The server will respond with the `CreateRoleResult` token containing the `ID` of
 </s:Envelope>
 ```
 
+  + response to `get-roles` (not following the above request):
+```xml
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <GetRolesResponse xmlns="http://www.blaise.com/security/2016/06">
+      <GetRolesResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <Role>
+          <Description>none</Description>
+          <Id>2</Id>
+          <Name>test-role-001</Name>
+          <Permissions>
+            <ActionPermission>
+              <Action>user.createuser</Action>
+              <Permission>1</Permission>
+            </ActionPermission>
+            <ActionPermission>
+              <Action>user.updateuser</Action>
+              <Permission>1</Permission>
+            </ActionPermission>
+            <ActionPermission>
+              <Action>user.removeuser</Action>
+              <Permission>1</Permission>
+            </ActionPermission>
+            <ActionPermission>
+              <Action>CATI</Action>
+              <Permission>1</Permission>
+            </ActionPermission>
+            <ActionPermission>
+              <Action>CATI.setcatispecification</Action>
+              <Permission>1</Permission>
+            </ActionPermission>
+            <ActionPermission>
+              <Action>CATI.setgeneralparameters</Action>
+              <Permission>1</Permission>
+            </ActionPermission>
+            <ActionPermission>
+              <Action>CATI.setgeneralparameters.setsurveydescription</Action>
+              <Permission>1</Permission>
+            </ActionPermission>
+          </Permissions>
+        </Role>
+      </GetRolesResult>
+    </GetRolesResponse>
+  </s:Body>
+</s:Envelope>
+```
+
+  + response when the `name` field contains the name of an existing role:
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <s:Fault>
+      <faultcode xmlns:a="http://schemas.microsoft.com/net/2005/12/windowscommunicationfoundation/dispatcher">a:InternalServiceFault</faultcode>
+      <faultstring xml:lang="en-US">The server was unable to process the request due to an internal error.  For more information about the error, either turn on IncludeExceptionDetailInFaults (either from ServiceBehaviorAttribute or from the &lt;serviceDebug&gt; configuration behavior) on the server in order to send the exception information back to the client, or turn on tracing as per the Microsoft .NET Framework SDK documentation and inspect the server trace logs.</faultstring>
+    </s:Fault>
+  </s:Body>
+</s:Envelope>
+```
+
 
 # Protocol Sniffing Process
 
