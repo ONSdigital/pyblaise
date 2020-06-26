@@ -5,9 +5,30 @@ Python interface to the blaise SOAP API
 
 Simple wrapper for the [Blaise](https://blaise.com/products/blaise-5) SOAP interface.
 
-*NB: This is mostly hacked together with direct HTTP requests.*
+The interface is well defined and reasonably intuitive if you are familiar with it.
 
-SOAP requests are an XML payload POSTed to an endpoint.
+Blaise has five resources, each with a [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
+interface accessed via a `POST` request with a header `SOAPAction` set to the following values:
+1) Roles
+    + create: `http://www.blaise.com/security/2016/06/ISecurityManagementService/CreateRole`
+    + read: `http://www.blaise.com/security/2016/06/ISecurityManagementService/GetRoles`
+    + update: `http://www.blaise.com/security/2016/06/ISecurityManagementService/UpdateRole`
+    + delete: `http://www.blaise.com/security/2016/06/ISecurityManagementService/DeleteRole`
+1) Skills
+    + tbd
+1) Users
+    + tbd
+1) Instruments
+    + tbd
+1) Server Parks
+    + tbd
+
+It is unfortunate that the interface is exposed via the poorly supported SOAP protocol, which
+makes working with the interface more difficult than the good, consistent design deserves.
+
+
+## NOTES
+This is mostly hacked together from direct HTTP requests observed in Wireshark.
 
 The `SOAPAction` header in the HTTP Request headers needs to match the payload. You will get a 500 error on mismatch.
 
@@ -743,6 +764,31 @@ To update a role, send the Update Role message and include *ALL* permissions, no
 	<s:Body>
 		<UpdateRoleResponse xmlns="http://www.blaise.com/security/2016/06"/>
 	</s:Body>
+</s:Envelope>
+```
+
+## Blaise Role Delete
+`SOAPAction: "http://www.blaise.com/security/2016/06/ISecurityManagementService/DeleteRole"`
+  + request: `POST /Blaise/Security/Services/SecurityManagementService HTTP/1.1`
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <Authorization xmlns="http://schemas.blaise.com/2016/06/authheader">Bearer xxx</Authorization>
+  </s:Header>
+  <s:Body>
+    <DeleteRole xmlns="http://www.blaise.com/security/2016/06">
+      <roleId>3</roleId>
+    </DeleteRole>
+  </s:Body>
+</s:Envelope>
+```
+
+  + response
+```
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <DeleteRoleResponse xmlns="http://www.blaise.com/security/2016/06"/>
+  </s:Body>
 </s:Envelope>
 ```
 
