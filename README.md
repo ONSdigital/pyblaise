@@ -5,7 +5,7 @@ Python interface to the blaise SOAP API
 
 Simple wrapper for the [Blaise](https://blaise.com/products/blaise-5) SOAP interface.
 
-The interface is well defined and reasonably intuitive if you are familiar with it.
+The interface is well defined and reasonably intuitive if you are familiar with Blaise concepts.
 
 Blaise has five resources, each with a [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
 interface accessed via a `POST` request with a header `SOAPAction` set to the following values:
@@ -22,6 +22,19 @@ interface accessed via a `POST` request with a header `SOAPAction` set to the fo
     + tbd
 1) Server Parks
     + tbd
+
+There are further operations to support:
++ Authentication
+    + `http://www.blaise.com/security/2016/06/ISecurityTokenService/RequestToken`
+    + `http://www.blaise.com/security/2016/06/ISecurityTokenService/RefreshToken`
++ Version
+    + `http://www.blaise.com/deploy/2014/09/IDeployService/GetVersionResponse`
+    + `http://www.blaise.com/deploy/2019/06/IDeployService/GetServerVersion`
++ File upload
+    + this is the only part of the interface which is not a SOAP action and is a standard
+      `POST` request with the file data included in the body.
+    + `POST /Blaise/Administer/Services/REST/<server-park>/<survey-name>/<survey-uuid>/uploadpackage`
+    + The `REST` element in the URL suggests a REST API exists, which is exciting.
 
 It is unfortunate that the interface is exposed via the poorly supported SOAP protocol, which
 makes working with the interface more difficult than the good, consistent design deserves.
@@ -99,17 +112,6 @@ The `SOAPAction` header in the HTTP Request headers needs to match the payload. 
     <GetAllUsers201812Response xmlns="http://www.blaise.com/security/2018/12">
       <GetAllUsers201812Result xmlns:i="http://www.w3.org/2001/XMLSchema-instance"/>
     </GetAllUsers201812Response>
-  </s:Body>
-</s:Envelope>
-```
-
-+ `SOAPAction: "http://www.blaise.com/security/2016/06/ISecurityManagementService/GetRoles"` server-park roles
-```
-<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
-  <s:Body>
-    <GetRolesResponse xmlns="http://www.blaise.com/security/2016/06">
-      <GetRolesResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance"/>
-    </GetRolesResponse>
   </s:Body>
 </s:Envelope>
 ```
