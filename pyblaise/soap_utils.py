@@ -111,7 +111,7 @@ def basic_soap_request(operation, protocol, host, port, **kwargs):
 
   R = request.prepare()
 
-  logger.trace(R.method, R.url, str(R.headers), str(R.body))
+  logger.debug(R.method, R.url, str(R.headers), str(R.body))
 
   # FIXME: maintain a session object for keepalive?
   S = requests.session()
