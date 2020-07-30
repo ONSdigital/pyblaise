@@ -13,9 +13,10 @@ logging.getLogger('pyblaise').setLevel(logging.INFO)
 
 # remote info
 protocol = "https"
-hostname = "dev-ed-50-client-tel.social-surveys.gcp.onsdigital.uk"
-username = "Root"
-password = "Root"
+hostname = os.environ["HOSTNAME"]
+username = os.environ["USERNAME"]
+password = os.environ["PASSWORD"]
+port = os.environ["PORT"]
 
 # create the role info
 new_role = {"name": "test-role-005",
@@ -38,7 +39,7 @@ print(json.dumps(new_role, indent=2))
 # NB: the with block will swallow up any exceptions, to see any exceptions, use:
 #blaise = pyblaise.Blaise(protocol, hostname, 8031, username, password)
 #if blaise is not None:
-with pyblaise.Blaise(protocol, hostname, 8031, username, password) as blaise:
+with pyblaise.Blaise(protocol, hostname, port, username, password) as blaise:
   roles = blaise.roles()
   print("existing role names: '%s'" % roles.keys())
 

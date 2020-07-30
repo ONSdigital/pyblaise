@@ -1,6 +1,12 @@
 import pyblaise
 
-_, x = pyblaise.get_auth_token("https", "dev-ed-48-client-tel.social-surveys.gcp.onsdigital.uk", 8031, "Root", "Root")
-z = pyblaise.get_server_park_definitions("https", "dev-ed-48-client-tel.social-surveys.gcp.onsdigital.uk", 8031, x)
+protocol = os.getenv("PROTOCOL", "https")
+hostname = os.environ["HOSTNAME"]
+username = os.environ["USERNAME"]
+password = os.environ["PASSWORD"]
+port = int(os.environ["PORT"])
+
+_, x = pyblaise.get_auth_token(protocol, hostname, port, username, password)
+z = pyblaise.get_server_park_definitions(protocol, hostname, port, x)
 
 print (z)
