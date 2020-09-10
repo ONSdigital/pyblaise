@@ -39,6 +39,8 @@ def get_list_of_instruments(protocol, host, port, token):
   R = basic_soap_request("get-list-of-instruments", protocol, host, port, TOKEN=token)
   logger.debug(R.text)
   results = parse_response_for_tag_contents(R.text, "GetListOfInstrumentsResult")
+  if not results:
+    return 200, []
   instruments = parse_response_for_tags_contents(results, "InstrumentMeta")
 
   data = []
