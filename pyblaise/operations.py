@@ -18,15 +18,22 @@ def get_auth_token(protocol, host, port, username, password):
   token = parse_response_for_tag_contents(R.text, "AccessToken")
   return R.status_code, token
 
-
-
 def get_all_users(protocol, host, port, token):
   R = basic_soap_request("get-all-users", protocol, host, port, TOKEN=token)
   logger.debug(R.text)
-  has_users = parse_response_for_tag(R.text, "GetAllUsers201812Result")
-  users = []
+  results = parse_response_for_tag_contents(R.text, "GetAllUsers201812Result")
+  if not results:
+    return 200, []
+  data = []
+  users = parse_response_for_tags_contents(results, "User201812")
 
-  return R.status_code, users
+  for user in users:
+    data += [{"name": parse_response_for_tag_contents(user, "Name"),
+              "last_activity": parse_response_for_tag_contents(user, "LastActivity"),
+              "last_login": parse_response_for_tag_contents(user, "LastLogin"),
+              }]
+
+  return R.status_code, data
 
 def is_interactive_connection_allowed(protocol, host, port, token):
   R = basic_soap_request("is-interactive-connection-allowed", protocol, host, port, TOKEN=token)
