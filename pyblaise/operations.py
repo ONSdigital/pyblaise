@@ -18,15 +18,24 @@ def get_auth_token(protocol, host, port, username, password):
   token = parse_response_for_tag_contents(R.text, "AccessToken")
   return R.status_code, token
 
-
-
 def get_all_users(protocol, host, port, token):
   R = basic_soap_request("get-all-users", protocol, host, port, TOKEN=token)
   logger.debug(R.text)
-  has_users = parse_response_for_tag(R.text, "GetAllUsers201812Result")
-  users = []
 
-  return R.status_code, users
+  has_users = parse_response_for_tag_contents(R.text, "GetAllUsers201812Result")
+
+  if not has_users:
+    return R.status_code, []
+
+  users = parse_response_for_tags_contents(results, "User201812")
+
+  data = [{"name": parse_response_for_tag_contents(user, "Name"),
+           "last_activity": parse_response_for_tag_contents(user, "LastActivity"),
+           "last_login": parse_response_for_tag_contents(user, "LastLogin"),
+          } for user in users]
+
+  return R.status_code, data
+
 
 def is_interactive_connection_allowed(protocol, host, port, token):
   R = basic_soap_request("is-interactive-connection-allowed", protocol, host, port, TOKEN=token)
@@ -38,21 +47,21 @@ def is_interactive_connection_allowed(protocol, host, port, token):
 def get_list_of_instruments(protocol, host, port, token):
   R = basic_soap_request("get-list-of-instruments", protocol, host, port, TOKEN=token)
   logger.debug(R.text)
-  results = parse_response_for_tag_contents(R.text, "GetListOfInstrumentsResult")
+
+  has_instruments = parse_response_for_tag_contents(R.text, "GetListOfInstrumentsResult")
+
+  if not has_instruments:
+    return R.status_code, []
+
   instruments = parse_response_for_tags_contents(results, "InstrumentMeta")
 
-  data = []
+  data = [{"install-date": parse_response_for_tag_contents(instrument, "InstallDate"),
+           "id": parse_response_for_tag_contents(instrument, "InstrumentId"),
+           "name": parse_response_for_tag_contents(instrument, "InstrumentName"),
+           "server-park": parse_response_for_tag_contents(instrument, "ServerPark"),
+           "status": parse_response_for_tag_contents(instrument, "Status")
+          } for instrument in instruments]
 
-  for instrument in instruments:
-    # create a dict
-    data += [{"install-date": parse_response_for_tag_contents(instrument, "InstallDate"),
-              "id": parse_response_for_tag_contents(instrument, "InstrumentId"),
-              "name": parse_response_for_tag_contents(instrument, "InstrumentName"),
-              "server-park": parse_response_for_tag_contents(instrument, "ServerPark"),
-              "status": parse_response_for_tag_contents(instrument, "Status")
-             }]
-
-  # FIXME: we return a list here because we are "list_of_instruments"
   return R.status_code, data
 
 
