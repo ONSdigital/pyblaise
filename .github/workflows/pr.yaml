@@ -28,3 +28,32 @@ jobs:
           git checkout $GITHUB_HEAD_REF
           git commit -am "Automated changes"
           git push
+
+  test:
+    runs-on: ubuntu-latest
+
+    needs:
+    - format
+
+    strategy:
+      max-parallel: 3
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: set up python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - uses: actions/checkout@v2
+
+    - name: install pyblaise
+      run: pip install .
+
+    - name: pytest
+      run: |
+        pip install -q pytest pytest-cov
+        pytest --cov=pyblaise
