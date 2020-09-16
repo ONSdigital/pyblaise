@@ -3,16 +3,20 @@ on: push
 jobs:
   format:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v1
+
     - name: black
       uses: lgeiger/black-action@master
       with:
         args: .
-    - name: Check for modified files
+
+    - name: check for modifications
       id: git-check
       run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
-    - name: Push changes
+
+    - name: push changes
       if: steps.git-check.outputs.modified == 'true'
       run: |
         git config --global user.name github-actions
@@ -24,6 +28,10 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+
+    needs:
+    - format
+
     strategy:
       matrix:
         python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
