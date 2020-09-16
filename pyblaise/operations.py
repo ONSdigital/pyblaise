@@ -27,7 +27,7 @@ def get_all_users(protocol, host, port, token):
   if not has_users:
     return R.status_code, []
 
-  users = parse_response_for_tags_contents(results, "User201812")
+  users = parse_response_for_tags_contents(has_users, "User201812")
 
   data = [{"name": parse_response_for_tag_contents(user, "Name"),
            "last_activity": parse_response_for_tag_contents(user, "LastActivity"),
@@ -53,7 +53,7 @@ def get_list_of_instruments(protocol, host, port, token):
   if not has_instruments:
     return R.status_code, []
 
-  instruments = parse_response_for_tags_contents(results, "InstrumentMeta")
+  instruments = parse_response_for_tags_contents(has_instruments, "InstrumentMeta")
 
   data = [{"install-date": parse_response_for_tag_contents(instrument, "InstallDate"),
            "id": parse_response_for_tag_contents(instrument, "InstrumentId"),
