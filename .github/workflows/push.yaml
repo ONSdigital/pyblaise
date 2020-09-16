@@ -46,8 +46,10 @@ jobs:
 
     - uses: actions/checkout@v2
 
+    - name: install pyblaise
+      run: pip install .
+
     - name: pytest
       run: |
-        pip install pytest
-        pip install pytest-cov
+        pip install -q pytest pytest-cov
         pytest --cov=pyblaise
