@@ -2,8 +2,9 @@ import pytest
 
 from pyblaise.soap_utils import parse_response_for_tags
 
+
 def test_parse_get_all_from_server_park_definition_response():
-  d = """
+    d = """
   <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
     <s:Body>
       <GetAllServerParkDefinitions201906Response xmlns="http://www.blaise.com/deploy/2019/06">
@@ -91,4 +92,7 @@ def test_parse_get_all_from_server_park_definition_response():
   </s:Envelope>
   """
 
-  assert parse_response_for_tags(d, ["ServerParkDefinition", "Roles", "SessionMode"]) is True
+    assert (
+        parse_response_for_tags(d, ["ServerParkDefinition", "Roles", "SessionMode"])
+        is True
+    )

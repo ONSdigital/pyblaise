@@ -1,10 +1,13 @@
 import pytest
 
-from pyblaise.soap_utils import (parse_response_for_tags_contents,
-                                 parse_response_for_tag_contents)
+from pyblaise.soap_utils import (
+    parse_response_for_tags_contents,
+    parse_response_for_tag_contents,
+)
+
 
 def test_parse_get_auth_token_response():
-  d = """
+    d = """
   <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
     <s:Body>
       <RequestTokenResponse xmlns="http://www.blaise.com/security/2016/06">
@@ -17,16 +20,16 @@ def test_parse_get_auth_token_response():
   </s:Envelope>
   """
 
-  x = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSb290Iiwicm9sZSI6Ik1hc3RlciIsImlzcyI6IkJsYWlzZSBTVFMiLCJhdWQiOiJCbGFpc2UgNSBTZXJ2aWNlcyIsImV4cCI6MTU5MTM0OTc3OCwibmJmIjoxNTkxMzQ4NTc4fQ.Bo6RqvyYWGRDmoeEPiGhFGHYJlujPbzi1gxou1Z1CEM"
+    x = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSb290Iiwicm9sZSI6Ik1hc3RlciIsImlzcyI6IkJsYWlzZSBTVFMiLCJhdWQiOiJCbGFpc2UgNSBTZXJ2aWNlcyIsImV4cCI6MTU5MTM0OTc3OCwibmJmIjoxNTkxMzQ4NTc4fQ.Bo6RqvyYWGRDmoeEPiGhFGHYJlujPbzi1gxou1Z1CEM"
 
-  v = parse_response_for_tag_contents(d, "AccessToken")
+    v = parse_response_for_tag_contents(d, "AccessToken")
 
-  assert v == x
+    assert v == x
 
 
 @pytest.mark.skip(reason="cannot parse tags with attributes")
 def test_parse_get_version_response():
-  d = """
+    d = """
   <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
     <s:Body>
       <GetVersionResponseResponse xmlns="http://www.blaise.com/configuration/2015/11">
@@ -45,7 +48,7 @@ def test_parse_get_version_response():
   </s:Envelope>
   """
 
-  x = """
+    x = """
           <a:CurrentVersion>
             <a:Month>6</a:Month>
             <a:Year>2019</a:Year>
@@ -56,14 +59,14 @@ def test_parse_get_version_response():
           </a:MinimumVersion>
   """
 
-  v = parse_response_for_tag_contents(d, "GetVersionResponseResult")
+    v = parse_response_for_tag_contents(d, "GetVersionResponseResult")
 
-  assert v == x
+    assert v == x
 
 
 @pytest.mark.skip(reason="cannot parse self-terminating tags")
 def test_parse_get_skills_response():
-  d = """
+    d = """
   <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
     <s:Body>
       <GetSkillsResponse xmlns="http://www.blaise.com/security/2018/12">
@@ -73,15 +76,15 @@ def test_parse_get_skills_response():
   </s:Envelope>
   """
 
-  x = ""
+    x = ""
 
-  v = parse_response_for_tag_contents(d, "GetSkillsResult")
+    v = parse_response_for_tag_contents(d, "GetSkillsResult")
 
-  assert v == x
+    assert v == x
 
 
 def test_parse_list_of_instruments_response():
-  d = """
+    d = """
 <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
   <s:Body>
     <GetListOfInstrumentsResponse xmlns="http://www.blaise.com/deploy/2013/03">
@@ -124,13 +127,13 @@ def test_parse_list_of_instruments_response():
 </s:Envelope>
   """
 
-  x = 4
-  v = list(parse_response_for_tags_contents(d, "InstrumentMeta"))
-  assert len(v) == x
+    x = 4
+    v = list(parse_response_for_tags_contents(d, "InstrumentMeta"))
+    assert len(v) == x
 
 
 def test_parse_list_of_instruments_response_empty():
-  d = """
+    d = """
 <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
   <s:Body>
     <GetListOfInstrumentsResponse xmlns="http://www.blaise.com/deploy/2013/03">
@@ -141,6 +144,6 @@ def test_parse_list_of_instruments_response_empty():
 </s:Envelope>
   """
 
-  x = 0
-  v = list(parse_response_for_tags_contents(d, "InstrumentMeta"))
-  assert len(v) == x
+    x = 0
+    v = list(parse_response_for_tags_contents(d, "InstrumentMeta"))
+    assert len(v) == x
