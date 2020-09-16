@@ -1,13 +1,12 @@
-from .operations import (
-    create_role,
-    get_auth_token,
-    get_all_users,
-    get_list_of_instruments,
-    get_roles,
-    get_server_park_definitions,
-    get_server_version,
-    get_skills,
-    get_version,
+from .operations import (create_role,
+                         get_auth_token,
+                         get_all_users,
+                         get_list_of_instruments,
+                         get_roles,
+                         get_server_park_definitions,
+                         get_server_version,
+                         get_skills,
+                         get_version,
 )
 
 
