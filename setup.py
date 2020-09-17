@@ -19,6 +19,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    install_requires=["jinja2", "requests"],
+    install_requires=["jinja2", "requests", "requests_mock"],
     package_data={"pyblaise": ["templates/*.template", "templates/survey/*.template"]},
 )

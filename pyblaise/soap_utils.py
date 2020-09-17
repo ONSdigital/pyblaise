@@ -57,7 +57,7 @@ def parse_response_for_tags_contents(response, tagname):
 
     for content in contents:
         logger.debug("found: '%s'" % content)
-        yield content
+        yield content.strip()
 
 
 def parse_response_for_tag_contents(response, tagname):
