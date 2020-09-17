@@ -13,13 +13,11 @@ host_infos = [
         "protocol": "http",
         "host": "my-host.com",
         "port": 8000,
-        "token": "my-dummy-token"
+        "token": "my-dummy-token",
     },
 ]
 
-mock_users = [
-{"username": "test-user-0123", "serverpark":"my-server-park"}
-]
+mock_users = [{"username": "test-user-0123", "serverpark": "my-server-park"}]
 
 mock_response_no_users = [
     """
@@ -34,7 +32,7 @@ mock_response_no_users = [
 ]
 
 mock_response_one_user = [
-"""
+    """
 <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
   <s:Body>
     <GetAllUsers201812Response xmlns="http://www.blaise.com/security/2018/12">
@@ -74,7 +72,9 @@ mock_response_one_user = [
     </GetAllUsers201812Response>
   </s:Body>
 </s:Envelope>
-""".format(**mock_users[0])
+""".format(
+        **mock_users[0]
+    )
 ]
 
 
