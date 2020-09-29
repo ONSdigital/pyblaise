@@ -284,6 +284,29 @@ def report_user_logout(protocol, host, port, token, username):
     return R.status_code
 
 
+def get_manifest_id_from_zip(existing_survey_filename):
+    """
+    Returns the survey ID from the manifest file within provided zip file
+    """
+
+    from zipfile import ZipFile
+
+    # Import required library
+    import xml.etree.ElementTree as ET
+
+    # Find the manifest file from the ZIP
+    with ZipFile(existing_survey_filename, "r") as z_in:
+        for item in z_in.infolist():
+            if item.filename.endswith(".manifest"):
+                with z_in.open(item.filename) as file:
+                    # Read from the file
+                    manifest_file = file.read().decode("utf-8")
+                    # Convert file to xml Element
+                    root = ET.fromstring(manifest_file)
+                    return root.attrib["ID"]
+    return None
+
+
 def create_survey_manifest(survey_name):
     from uuid import uuid4
 
