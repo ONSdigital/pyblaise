@@ -47,7 +47,7 @@
                   xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
           <ServerParks
                   xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
-              {% for SERVER_PARK in SERVER_PARKS.items() %}
+              {% for SERVER_PARK in SERVER_PARKS %}
                 <a:string>{{ SERVER_PARK }}</a:string>
               {% endfor %}
           </ServerParks>
