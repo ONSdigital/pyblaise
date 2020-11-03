@@ -414,9 +414,4 @@ def create_user(
     )
     logger.debug(R.text)
 
-    user_id = parse_response_for_tag_contents(R.text, "CreateRoleResult")
-
-    if user_id is None:
-        raise CreateRoleFailed
-
-    return R.status_code, int(user_id)
+    return R.status_code, "Created"
