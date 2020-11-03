@@ -394,6 +394,7 @@ def create_user(
     name: name of the user
     password: password to assign to user
     description: description of the user (can be empty)
+    role_id: role is to assign to the user
     server_parks: list of server parks to assign to user
 
 
