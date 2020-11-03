@@ -386,7 +386,7 @@ def create_role(protocol, host, port, token, name, description, permissions):
     return R.status_code, int(role_id)
 
 
-def create_user(protocol, host, port, token, name, password, description, server_parks):
+def create_user(protocol, host, port, token, name, password, description, role_id, server_parks):
     """
     create a user
     name: name of the user
@@ -407,6 +407,7 @@ def create_user(protocol, host, port, token, name, password, description, server
         NAME=name,
         PASSWORD=password,
         DESCRIPTION=description,
+        ROLE_ID=role_id,
         SERVER_PARKS=server_parks
     )
     logger.debug(R.text)
