@@ -2,62 +2,57 @@
 {% include "auth-header.xml.template" %}
   <s:Body>
     <CreateUser201812 xmlns="http://www.blaise.com/security/2018/12">
-    <userToCreate
-            xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-        <AdIdentifier
-                i:nil="true"/>
-        <AdSyncEnabled>
-            0
-        </AdSyncEnabled>
-        <Claims
-                xmlns:a="http://www.blaise.com/security/2016/03">
-            <a:IdentityClaim>
-                <a:ClaimType>
-                    CATI.Groups
-                </a:ClaimType>
-                <a:ClaimValue/>
-            </a:IdentityClaim>
-            <a:IdentityClaim>
-                <a:ClaimType>
-                    CATI.MainGroup
-                </a:ClaimType>
-                <a:ClaimValue
-                        i:nil="true"/>
-            </a:IdentityClaim>
-        </Claims>
-        <Description
-                i:nil="true"/>
-        <LastActivity
-                i:nil="true"/>
-        <LastLogin
-                i:nil="true"/>
-        <LastLogout
-                i:nil="true"/>
-        <Name>
-            dave
-        </Name>
-        <Password>
-            Password
-        </Password>
-        <Permissions
-                i:nil="true"
-                xmlns:a="http://www.blaise.com/security/2016/06"/>
-        <Preferences
-                i:nil="true"
-                xmlns:a="http://www.blaise.com/security/2016/06"/>
-        <RoleId>
-            1
-        </RoleId>
-        <Roles
-                xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-        <ServerParks
-                xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
-            <a:string>
-                LocalDevelopment
-            </a:string>
-        </ServerParks>
-        <UserSkills/>
-    </userToCreate>
+      <userToCreate
+              xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+          <AdIdentifier
+                  i:nil="true"/>
+          <AdSyncEnabled>
+              0
+          </AdSyncEnabled>
+          <Claims
+                  xmlns:a="http://www.blaise.com/security/2016/03">
+              <a:IdentityClaim>
+                  <a:ClaimType>
+                      CATI.Groups
+                  </a:ClaimType>
+                  <a:ClaimValue/>
+              </a:IdentityClaim>
+              <a:IdentityClaim>
+                  <a:ClaimType>
+                      CATI.MainGroup
+                  </a:ClaimType>
+                  <a:ClaimValue
+                          i:nil="true"/>
+              </a:IdentityClaim>
+          </Claims>
+          <Description>{{ DESCRIPTION }}</Description>
+          <LastActivity
+                  i:nil="true"/>
+          <LastLogin
+                  i:nil="true"/>
+          <LastLogout
+                  i:nil="true"/>
+          <Name>{{ NAME }}</Name>
+          <Password>{{ PASSWORD }}</Password>
+          <Permissions
+                  i:nil="true"
+                  xmlns:a="http://www.blaise.com/security/2016/06"/>
+          <Preferences
+                  i:nil="true"
+                  xmlns:a="http://www.blaise.com/security/2016/06"/>
+          <RoleId>
+              {{ ROLE_ID }}
+          </RoleId>
+          <Roles
+                  xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <ServerParks
+                  xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              {% for SERVER_PARK in SERVER_PARKS.items() %}
+                <a:string>{{ SERVER_PARK }}</a:string>
+              {% endfor %}
+          </ServerParks>
+          <UserSkills/>
+      </userToCreate>
     </CreateUser201812>
   </s:Body>
 {% include "file-footer.xml.template" %}

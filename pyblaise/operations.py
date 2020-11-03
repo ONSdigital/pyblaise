@@ -386,23 +386,34 @@ def create_role(protocol, host, port, token, name, description, permissions):
     return R.status_code, int(role_id)
 
 
-def create_user(protocol, host, port, token):
+def create_user(protocol, host, port, token, name, password, description, server_parks):
     """
-    create a role and add selected permissions
-    name: name of the role
-    description: description of the role (can be empty)
-    permissions: list of kv pairs [{action: permitted}, {action: permitted}...]
-                 i.e., the name of the action and a boolean indicating whether it is permitted.
+    create a user
+    name: name of the user
+    password: password to assign to user
+    description: description of the user (can be empty)
+    server_parks: list of server parks to assign to user
+
 
     return (status_code, role_id)
     """
 
-    R = basic_soap_request("create-user", protocol, host, port, TOKEN=token)
+    R = basic_soap_request(
+        "create-user",
+        protocol,
+        host,
+        port,
+        TOKEN=token,
+        NAME=name,
+        PASSWORD=password,
+        DESCRIPTION=description,
+        SERVER_PARKS=server_parks
+    )
     logger.debug(R.text)
 
-    role_id = parse_response_for_tag_contents(R.text, "CreateRoleResult")
+    user_id = parse_response_for_tag_contents(R.text, "CreateRoleResult")
 
-    if role_id is None:
+    if user_id is None:
         raise CreateRoleFailed
 
-    return R.status_code, int(role_id)
+    return R.status_code, int(user_id)
