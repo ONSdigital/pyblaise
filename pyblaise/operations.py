@@ -385,6 +385,7 @@ def create_role(protocol, host, port, token, name, description, permissions):
 
     return R.status_code, int(role_id)
 
+
 def create_user(protocol, host, port, token):
     """
     create a role and add selected permissions
@@ -396,13 +397,7 @@ def create_user(protocol, host, port, token):
     return (status_code, role_id)
     """
 
-    R = basic_soap_request(
-        "create-user",
-        protocol,
-        host,
-        port,
-        TOKEN=token
-    )
+    R = basic_soap_request("create-user", protocol, host, port, TOKEN=token)
     logger.debug(R.text)
 
     role_id = parse_response_for_tag_contents(R.text, "CreateRoleResult")
@@ -411,4 +406,3 @@ def create_user(protocol, host, port, token):
         raise CreateRoleFailed
 
     return R.status_code, int(role_id)
-
