@@ -88,8 +88,8 @@ operations = {
         "path": "/Blaise/Security/Services/SecurityManagementService",
         "headers": {
             "SOAPAction": "http://www.blaise.com/security/2018/12/ISecurityManagementService/CreateUser201812"
-        }
-    }
+        },
+    },
 }
 
 default_headers = {
