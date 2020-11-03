@@ -408,7 +408,7 @@ def create_user(protocol, host, port, token, name, password, description, role_i
         PASSWORD=password,
         DESCRIPTION=description,
         ROLE_ID=role_id,
-        SERVER_PARKS=server_parks
+        SERVER_PARKS=server_parks,
     )
     logger.debug(R.text)
 
