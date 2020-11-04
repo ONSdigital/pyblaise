@@ -386,7 +386,7 @@ def create_role(protocol, host, port, token, name, description, permissions):
     return R.status_code, int(role_id)
 
 
-def change_user_name(protocol, host, port, token, name, new_password):
+def change_users_password(protocol, host, port, token, name, new_password):
     """
     create a role and add selected permissions
     name: name of the user
