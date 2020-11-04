@@ -8,6 +8,7 @@ from .operations import (
     get_server_version,
     get_skills,
     get_version,
+    change_users_password
 )
 
 
@@ -92,3 +93,16 @@ class Blaise:
     def server_park_definitions(self):
         """get a list of server parks and definitions from the server"""
         return get_server_park_definitions(**self.connection_info, token=self.token)
+
+    def change_users_password(self, name, new_password):
+        """create a role on the server with the given name and description
+        name: name of the user
+        new_password: new password to assign to user
+        returns: status
+        """
+        return change_users_password(
+            **self.connection_info,
+            token=self.token,
+            name=name,
+            new_password=new_password,
+        )

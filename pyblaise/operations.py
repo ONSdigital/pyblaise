@@ -405,9 +405,4 @@ def change_users_password(protocol, host, port, token, name, new_password):
     )
     logger.debug(R.text)
 
-    role_id = parse_response_for_tag_contents(R.text, "CreateRoleResult")
-
-    if role_id is None:
-        raise CreateRoleFailed
-
-    return R.status_code, int(role_id)
+    return R.status_code, "Changed"
