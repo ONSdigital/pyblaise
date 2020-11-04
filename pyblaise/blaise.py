@@ -8,7 +8,7 @@ from .operations import (
     get_server_version,
     get_skills,
     get_version,
-    change_users_password
+    change_users_password,
 )
 
 
@@ -67,7 +67,7 @@ class Blaise:
             token=self.token,
             name=name,
             description=description,
-            permissions=permissions
+            permissions=permissions,
         )
         return role_id
 
