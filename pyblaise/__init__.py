@@ -14,7 +14,7 @@ from .operations import (
     is_interactive_connection_allowed,
     remove_instrument,
     report_user_logout,
-    change_users_password
+    change_users_password,
 )
 
 from .upload_survey import upload_survey
