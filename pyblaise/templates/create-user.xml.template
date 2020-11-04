@@ -9,22 +9,6 @@
           <AdSyncEnabled>
               0
           </AdSyncEnabled>
-          <Claims
-                  xmlns:a="http://www.blaise.com/security/2016/03">
-              <a:IdentityClaim>
-                  <a:ClaimType>
-                      CATI.Groups
-                  </a:ClaimType>
-                  <a:ClaimValue/>
-              </a:IdentityClaim>
-              <a:IdentityClaim>
-                  <a:ClaimType>
-                      CATI.MainGroup
-                  </a:ClaimType>
-                  <a:ClaimValue
-                          i:nil="true"/>
-              </a:IdentityClaim>
-          </Claims>
           <Description>{{ DESCRIPTION }}</Description>
           <LastActivity
                   i:nil="true"/>
