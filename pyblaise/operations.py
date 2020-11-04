@@ -384,3 +384,30 @@ def create_role(protocol, host, port, token, name, description, permissions):
         raise CreateRoleFailed
 
     return R.status_code, int(role_id)
+
+
+def change_user_name(protocol, host, port, token, name, new_password):
+    """
+    create a role and add selected permissions
+    name: name of the user
+    new_password: new password to assign to user
+    return (status_code, role_id)
+    """
+
+    R = basic_soap_request(
+        "change-user-password",
+        protocol,
+        host,
+        port,
+        TOKEN=token,
+        NAME=name,
+        NEW_PASSWORD=new_password,
+    )
+    logger.debug(R.text)
+
+    role_id = parse_response_for_tag_contents(R.text, "CreateRoleResult")
+
+    if role_id is None:
+        raise CreateRoleFailed
+
+    return R.status_code, int(role_id)
