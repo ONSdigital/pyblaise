@@ -397,8 +397,7 @@ def create_user(
     role_id: role is to assign to the user
     server_parks: list of server parks to assign to user
 
-
-    return (status_code, role_id)
+    return (status_code, "Created")
     """
 
     R = basic_soap_request(
