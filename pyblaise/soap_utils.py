@@ -8,13 +8,10 @@ from jinja2 import StrictUndefined
 
 from .definitions import operations, default_headers
 from .exceptions import *
+from .constants import *
 
 
 logger = logging.getLogger(__name__)
-
-
-TEMPLATE_DIR = "templates"
-TEMPLATE_PATH = join(dirname(__file__), TEMPLATE_DIR)
 
 
 env = Environment(
