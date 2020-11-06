@@ -99,7 +99,7 @@ class Blaise:
             password=password,
             description=description,
             role_id=role_id,
-            server_parks=server_parks
+            server_parks=server_parks,
         )
 
     def instruments(self):
