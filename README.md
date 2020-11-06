@@ -39,7 +39,8 @@ interface accessed via a `POST` request with a header `SOAPAction` set to the fo
 1) Skills
     + tbd
 1) Users
-    + tbd
+    + create: `http://www.blaise.com/security/2018/12/ISecurityManagementService/CreateUser201812`
+    + read: `http://www.blaise.com/security/2018/12/ISecurityManagementService/GetAllUsers201812`
 1) Instruments
     + create: ?
     + read: `http://www.blaise.com/deploy/2013/03/IDeployService/GetListOfInstruments`
