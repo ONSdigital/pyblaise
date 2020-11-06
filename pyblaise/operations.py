@@ -305,6 +305,29 @@ def report_user_logout(protocol, host, port, token, username):
     return R.status_code
 
 
+def get_manifest_id_from_zip(existing_survey_filename):
+    """
+    Returns the survey ID from the manifest file within provided zip file
+    """
+
+    from zipfile import ZipFile
+
+    # Import required library
+    import xml.etree.ElementTree as ET
+
+    # Find the manifest file from the ZIP
+    with ZipFile(existing_survey_filename, "r") as z_in:
+        for item in z_in.infolist():
+            if item.filename.endswith(".manifest"):
+                with z_in.open(item.filename) as file:
+                    # Read from the file
+                    manifest_file = file.read().decode("utf-8")
+                    # Convert file to xml Element
+                    root = ET.fromstring(manifest_file)
+                    return root.attrib["ID"]
+    return None
+
+
 def create_survey_manifest(survey_name):
     from uuid import uuid4
 
@@ -382,3 +405,34 @@ def create_role(protocol, host, port, token, name, description, permissions):
         raise CreateRoleFailed
 
     return R.status_code, int(role_id)
+
+
+def create_user(
+    protocol, host, port, token, name, password, description, role_id, server_parks
+):
+    """
+    create a user
+    name: name of the user
+    password: password to assign to user
+    description: description of the user (can be empty)
+    role_id: role is to assign to the user
+    server_parks: list of server parks to assign to user
+
+    return (status_code, "Created")
+    """
+
+    R = basic_soap_request(
+        "create-user",
+        protocol,
+        host,
+        port,
+        TOKEN=token,
+        NAME=name,
+        PASSWORD=password,
+        DESCRIPTION=description,
+        ROLE_ID=role_id,
+        SERVER_PARKS=server_parks,
+    )
+    logger.debug(R.text)
+
+    return R.status_code, "Created"
