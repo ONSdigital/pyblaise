@@ -1,5 +1,7 @@
 from .operations import (
     create_role,
+    create_user,
+    get_manifest_id_from_zip,
     create_survey_manifest,
     create_survey_from_existing,
     get_auth_token,

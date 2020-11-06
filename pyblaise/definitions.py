@@ -83,6 +83,13 @@ operations = {
             "SOAPAction": "http://www.blaise.com/security/2016/06/ISecurityManagementService/CreateRole"
         },
     },
+    "create-user": {
+        "template": "create-user.xml.template",
+        "path": "/Blaise/Security/Services/SecurityManagementService",
+        "headers": {
+            "SOAPAction": "http://www.blaise.com/security/2018/12/ISecurityManagementService/CreateUser201812"
+        },
+    },
 }
 
 default_headers = {
