@@ -7,6 +7,7 @@ from jinja2 import Environment, FileSystemLoader, PackageLoader, select_autoesca
 from jinja2 import StrictUndefined
 
 from .definitions import operations, default_headers
+from .exceptions import *
 
 
 logger = logging.getLogger(__name__)
@@ -96,8 +97,24 @@ def build_uri(protocol, host, port, path):
 
 
 def basic_soap_request(operation, protocol, host, port, **kwargs):
-    """construct a soap request from a jinja template
-    ¯\_(ツ)_/¯
+    """
+    construct a soap request from a jinja template
+    and send to __do_soap_request for the actual communication
+
+    args:
+      operation (str): the operation to lookup in the operations table
+      protocol (str): http or https
+      host (str): resolvable hostname of the server
+      port (int): port number to connect to on the server (usually 8031)
+
+    kwargs:
+      see: __do_soap_request
+
+    returns:
+      see: __do_soap_request
+
+    raises:
+      see: __do_soap_request
     """
     op = operations[operation]
 
@@ -107,14 +124,44 @@ def basic_soap_request(operation, protocol, host, port, **kwargs):
     headers.update(default_headers)
     headers.update(op["headers"])
 
-    request = requests.Request(
-        "POST", build_uri(protocol, host, port, op["path"]), headers=headers, data=data
-    )
+    uri = build_uri(protocol, host, port, op["path"])
 
+    return __do_soap_request(uri, headers, data, **kwargs)
+
+
+def __do_soap_request(uri, headers, payload, **kwargs):
+    """
+    send a payload to the endpoint
+
+    args:
+      uri (str): endpoint of the service
+      headers ({str: str}): map of headers to values
+      payload (str): data to post to the endpoint
+
+    kwargs:
+      session (session): session object to reuse
+      timeout (int): timeout in seconds allowance to pass to the requests library, 10 if unset
+                     https://requests.readthedocs.io/en/master/user/advanced/#timeouts
+
+    returns:
+      tuple(requests.response, requests.session)
+
+    raises:
+      https://requests.readthedocs.io/en/latest/api/#exceptions
+    """
+    request = requests.Request("POST", uri, headers=headers, data=payload)
+
+    S = kwargs.get("session", requests.session())
+
+    # FIXME: we should probably do a prepare_request here, for cookies sake?
+    #        https://requests.readthedocs.io/en/master/api/#requests.Session.prepare_request
     R = request.prepare()
 
     logger.debug(R.method, R.url, str(R.headers), str(R.body))
 
-    # FIXME: maintain a session object for keepalive?
-    S = requests.session()
-    return S.send(R)
+    try:
+        return S.send(R)
+    except requests.Timeout as e:
+        raise ServerConnectionTimeout from e
+    except requests.ConnectionError as e:
+        raise ServerConnectionError from e
