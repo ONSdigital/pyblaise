@@ -46,9 +46,17 @@ def test__do_soap_request_raises_ServerConnectionTimeout_on_requests_ConnectTime
       __do_soap_request(host_info["uri"], {}, {})
 
 
-@pytest.mark.parametrize("host_info", host_infos)
-def test__do_soap_request_raises_ServerConnectionTimeout_on_requests_ReadTimeout(host_info, requests_mock):
-    requests_mock.register_uri("POST", host_info["uri"], exc=requests.exceptions.ReadTimeout)
 
-    with pytest.raises(ServerConnectionTimeout):
-      __do_soap_request(host_info["uri"], {}, {})
+@pytest.mark.parametrize("host_info", host_infos)
+def test__do_soap_request_uses_session_object(host_info, requests_mock):
+    # FIXMIE: We should test that the session object is used
+    requests_mock.register_uri("POST", host_info["uri"], status_code=200, text="OK")
+    S = requests.session()
+
+    resp = __do_soap_request(host_info["uri"], {}, {}, session=S)
+
+    assert requests_mock.called is True
+    assert requests_mock.call_count == 1
+    assert resp.status_code == 200
+    assert S is not None
+    assert isinstance(S, requests.Session)
