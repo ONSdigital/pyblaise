@@ -56,7 +56,6 @@ def test__do_soap_request_raises_ServerConnectionTimeout_on_requests_ConnectTime
         __do_soap_request(host_info["uri"], {}, {})
 
 
-
 @pytest.mark.parametrize("host_info", host_infos)
 def test__do_soap_request_raises_ServerConnectionTimeout_on_requests_ReadTimeout(
     host_info, requests_mock

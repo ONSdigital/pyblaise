@@ -10,7 +10,6 @@ from pyblaise.soap_utils import create_soap_from_template, env as template_env
 template_filenames = [operations[k]["template"] for k in operations]
 
 
-
 def test_template_env_is_PackageLoader():
     assert template_env is not None
     assert isinstance(template_env, jinja2.Environment)
