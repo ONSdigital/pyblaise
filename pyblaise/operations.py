@@ -1,3 +1,13 @@
+"""
+basic functionality interface to blaise via the SOAP API.
+
+These functions provide the interface between Blaise SOAP API and
+some calling python process.
+
+These functions should not be used directly, prefer the Blaise class
+in blaise.py. However, these can be used for low-level interactions,
+testing, etc.
+"""
 import logging
 
 from .soap_utils import (
@@ -15,6 +25,17 @@ logger = logging.getLogger(__name__)
 
 
 def get_auth_token(protocol, host, port, username, password):
+    """
+    get an OAuth access token from Blaise with the given credentials
+
+    protocol: http or https
+    host: dns or ip address of blaise host
+    port: port number for blaise process (usually 8031)
+    username: user...name?
+    password: password
+
+    returns tuple(HTTP status code, access token string)
+    """
     R = basic_soap_request(
         "request-token", protocol, host, port, USERNAME=username, PASSWORD=password
     )
