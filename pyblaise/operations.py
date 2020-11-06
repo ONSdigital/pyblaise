@@ -386,6 +386,37 @@ def create_role(protocol, host, port, token, name, description, permissions):
     return R.status_code, int(role_id)
 
 
+def create_user(
+    protocol, host, port, token, name, password, description, role_id, server_parks
+):
+    """
+    create a user
+    name: name of the user
+    password: password to assign to user
+    description: description of the user (can be empty)
+    role_id: role is to assign to the user
+    server_parks: list of server parks to assign to user
+
+    return (status_code, "Created")
+    """
+
+    R = basic_soap_request(
+        "create-user",
+        protocol,
+        host,
+        port,
+        TOKEN=token,
+        NAME=name,
+        PASSWORD=password,
+        DESCRIPTION=description,
+        ROLE_ID=role_id,
+        SERVER_PARKS=server_parks,
+    )
+    logger.debug(R.text)
+
+    return R.status_code, "Created"
+
+
 def change_users_password(protocol, host, port, token, name, new_password):
     """
     create a role and add selected permissions

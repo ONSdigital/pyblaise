@@ -1,5 +1,6 @@
 from .operations import (
     create_role,
+    create_user,
     get_auth_token,
     get_all_users,
     get_list_of_instruments,
@@ -81,6 +82,25 @@ class Blaise:
     def users(self):
         """get a list of users from the server"""
         return get_all_users(**self.connection_info, token=self.token)
+
+    def create_user(self, name, password, description, role_id, server_parks):
+        """create a user on the server with the given variables
+        name: name of the user
+        password: password to assign to user
+        description: description of the user (can be empty)
+        role_id: role is to assign to the user
+        server_parks: list of server parks to assign to user
+        returns: "Created" String
+        """
+        return create_user(
+            **self.connection_info,
+            token=self.token,
+            name=name,
+            password=password,
+            description=description,
+            role_id=role_id,
+            server_parks=server_parks
+        )
 
     def instruments(self):
         """get a list of instruments from the server"""
