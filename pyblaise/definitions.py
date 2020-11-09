@@ -90,6 +90,13 @@ operations = {
             "SOAPAction": "http://www.blaise.com/security/2018/12/ISecurityManagementService/CreateUser201812"
         },
     },
+    "change-user-password": {
+        "template": "change-user-password.xml.template",
+        "path": "/Blaise/Security/Services/SecurityManagementService",
+        "headers": {
+            "SOAPAction": "http://www.blaise.com/security/2013/03/ISecurityManagementService/ChangePassword"
+        },
+    },
 }
 
 default_headers = {

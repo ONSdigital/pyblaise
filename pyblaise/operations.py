@@ -436,3 +436,25 @@ def create_user(
     logger.debug(R.text)
 
     return R.status_code, "Created"
+
+
+def change_users_password(protocol, host, port, token, name, new_password):
+    """
+    change users password
+    name: name of the user
+    new_password: new password to assign to user
+    return (status_code, role_id)
+    """
+
+    R = basic_soap_request(
+        "change-user-password",
+        protocol,
+        host,
+        port,
+        TOKEN=token,
+        NAME=name,
+        NEW_PASSWORD=new_password,
+    )
+    logger.debug(R.text)
+
+    return R.status_code, "Changed"
