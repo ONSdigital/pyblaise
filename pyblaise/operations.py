@@ -419,7 +419,7 @@ def create_user(
 
 def change_users_password(protocol, host, port, token, name, new_password):
     """
-    create a role and add selected permissions
+    change users password
     name: name of the user
     new_password: new password to assign to user
     return (status_code, role_id)

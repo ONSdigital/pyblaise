@@ -115,7 +115,7 @@ class Blaise:
         return get_server_park_definitions(**self.connection_info, token=self.token)
 
     def change_users_password(self, name, new_password):
-        """create a role on the server with the given name and description
+        """change users password
         name: name of the user
         new_password: new password to assign to user
         returns: status
