@@ -19,6 +19,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+      with:
+        fetch-depth: 0
 
     - name: black
       uses: lgeiger/black-action@master
@@ -52,13 +54,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: set up python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-
-    - uses: actions/checkout@v2
 
     - name: install pyblaise
       run: pip install .

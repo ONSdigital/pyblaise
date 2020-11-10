@@ -4,10 +4,7 @@ import subprocess
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-try:
-  version = subprocess.check_output(["git", "describe"]).strip()
-except subprocess.CalledProcessError:
-  version = "0.0.1"
+version = subprocess.check_output(["git", "describe"]).strip()
 
 setuptools.setup(
     name="pyblaise",
