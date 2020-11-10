@@ -8,11 +8,10 @@
 name: lint+test
 on:
   push:
-    branches:
-      !master
-    tags:
-      - !"rc*"
-      - !"v*"
+    branches-ignore:
+      - master
+    tags-ignore:
+      - "**"
 
 jobs:
   format:
