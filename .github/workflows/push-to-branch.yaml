@@ -1,5 +1,16 @@
-name: auto-format
-on: push
+#
+# lint and test the code on push
+# to any branch except master
+#
+# push-to-master is disabled; any push to master must have passed lint+test
+#
+
+name: lint+test
+on:
+  push:
+    branches:
+      !master
+
 jobs:
   format:
     runs-on: ubuntu-latest
