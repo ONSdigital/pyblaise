@@ -1,11 +1,14 @@
 import setuptools
+import process
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+version = subprocess.check_output(["git", "describe"]).strip()
+
 setuptools.setup(
     name="pyblaise",
-    version="0.0.1",
+    version=version,
     author="ed grundy",
     author_email="edward.grundy@ext.ons.gov.uk",
     description="A simple wrapper to the Blaise SOAP interface",
