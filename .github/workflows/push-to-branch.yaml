@@ -10,6 +10,9 @@ on:
   push:
     branches:
       !master
+    tags:
+      - !"rc*"
+      - !"v*"
 
 jobs:
   format:
