@@ -1,5 +1,5 @@
 import setuptools
-import process
+import subprocess
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
