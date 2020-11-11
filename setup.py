@@ -1,14 +1,41 @@
 import setuptools
 import subprocess
+import pep440
+
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-version = subprocess.check_output(["git", "describe"], encoding="UTF-8").strip()
+
+def get_git_version():
+  """
+  get pep440 compatible version string from tag/commit
+  requirements:
+  + history must have a tag (do not do a shallow clone, make an initial tag, etc)
+  + tag must have the pattern '[N!]N(.N)*[{a|b|rc}N][.postN][.devN]' (see link)
+    + use a for alpha, b for beta, rc for release candidate
+    + postN for hotfixes
+    + devN for developer versions
+
+  refs:
+    https://www.python.org/dev/peps/pep-0440/
+  """
+  v = subprocess.check_output(["git", "describe"], encoding="UTF-8").strip().split("-")
+
+  if len(v) == 3:
+    version = "%s.dev%s+%s" % (v[0], v[1], v[2]) # tag, commits away, current hash
+  else:
+    version = v[0] # git tag only
+
+  if not pep440.is_canonical(version):
+    raise Exception("version string is not pep440 compatible: '%s'" % version)
+
+  return version
+
 
 setuptools.setup(
     name="pyblaise",
-    version=version,
+    version=get_git_version(),
     author="ed grundy",
     author_email="edward.grundy@ext.ons.gov.uk",
     description="A simple wrapper to the Blaise SOAP interface",
@@ -22,6 +49,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    install_requires=["jinja2", "requests", "requests_mock"],
+    install_requires=["jinja2", "requests", "requests_mock", "pep440"],
     package_data={"pyblaise": ["templates/*.template", "templates/survey/*.template"]},
 )
