@@ -15,6 +15,7 @@ def get_git_version():
       + use a for alpha, b for beta, rc for release candidate
       + postN for hotfixes
       + devN for developer versions
+    + the commit sha (+<sha> in pep440) is omitted from the version string
 
     refs:
       https://www.python.org/dev/peps/pep-0440/
@@ -26,7 +27,7 @@ def get_git_version():
     )
 
     if len(v) == 3:
-        version = "%s.dev%s+%s" % (v[0], v[1], v[2])  # tag, commits away, current hash
+        version = "%s.dev%s" % (v[0], v[1])  # tag, commits away, no current hash
     else:
         version = v[0]  # git tag only
 
