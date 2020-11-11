@@ -9,7 +9,7 @@ name: pypi-release-candidate-deploy
 on:
   push:
     tags:
-      - "rc*"
+      - "v*rc*"
 
 jobs:
   deploy:
