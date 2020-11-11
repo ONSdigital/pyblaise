@@ -32,7 +32,7 @@ def get_git_version():
         version = v[0]  # git tag only
 
     # FIXME: check the regex
-    #if not pep440.is_canonical(version):
+    # if not pep440.is_canonical(version):
     #    raise Exception("version string is not pep440 compatible: '%s'" % version)
 
     return version
