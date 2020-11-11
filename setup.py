@@ -1,6 +1,5 @@
 import setuptools
 import subprocess
-import pep440
 
 
 with open("README.md", "r") as fh:
@@ -27,8 +26,9 @@ def get_git_version():
   else:
     version = v[0] # git tag only
 
-  if not pep440.is_canonical(version):
-    raise Exception("version string is not pep440 compatible: '%s'" % version)
+  # FIXME: check the regex
+  #if not pep440.is_canonical(version):
+  #  raise Exception("version string is not pep440 compatible: '%s'" % version)
 
   return version
 
@@ -49,6 +49,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    install_requires=["jinja2", "requests", "requests_mock", "pep440"],
+    install_requires=["jinja2", "requests", "requests_mock"],
     package_data={"pyblaise": ["templates/*.template", "templates/survey/*.template"]},
 )
