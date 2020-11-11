@@ -8,29 +8,33 @@ with open("README.md", "r") as fh:
 
 
 def get_git_version():
-  """
-  get pep440 compatible version string from tag/commit
-  requirements:
-  + history must have a tag (do not do a shallow clone, make an initial tag, etc)
-  + tag must have the pattern '[N!]N(.N)*[{a|b|rc}N][.postN][.devN]' (see link)
-    + use a for alpha, b for beta, rc for release candidate
-    + postN for hotfixes
-    + devN for developer versions
+    """
+    get pep440 compatible version string from tag/commit
+    requirements:
+    + history must have a tag (do not do a shallow clone, make an initial tag, etc)
+    + tag must have the pattern '[N!]N(.N)*[{a|b|rc}N][.postN][.devN]' (see link)
+      + use a for alpha, b for beta, rc for release candidate
+      + postN for hotfixes
+      + devN for developer versions
 
-  refs:
-    https://www.python.org/dev/peps/pep-0440/
-  """
-  v = subprocess.check_output(["git", "describe"], encoding="UTF-8").strip().split("-")
+    refs:
+      https://www.python.org/dev/peps/pep-0440/
+    """
+    v = (
+        subprocess.check_output(["git", "describe"], encoding="UTF-8")
+        .strip()
+        .split("-")
+    )
 
-  if len(v) == 3:
-    version = "%s.dev%s+%s" % (v[0], v[1], v[2]) # tag, commits away, current hash
-  else:
-    version = v[0] # git tag only
+    if len(v) == 3:
+        version = "%s.dev%s+%s" % (v[0], v[1], v[2])  # tag, commits away, current hash
+    else:
+        version = v[0]  # git tag only
 
-  if not pep440.is_canonical(version):
-    raise Exception("version string is not pep440 compatible: '%s'" % version)
+    if not pep440.is_canonical(version):
+        raise Exception("version string is not pep440 compatible: '%s'" % version)
 
-  return version
+    return version
 
 
 setuptools.setup(
