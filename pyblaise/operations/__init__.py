@@ -35,7 +35,7 @@ from .roles import get_roles, create_role, get_remote_defined_roles
 from .server_park import (
     get_all_server_parks,
     get_server_park,
-    add_server_to_server_park,
+    update_server_park
 )
 from .skills import get_skills
 from .users import get_all_users, create_user

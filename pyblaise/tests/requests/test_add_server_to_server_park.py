@@ -4,7 +4,7 @@ import urllib
 
 from collections import namedtuple
 
-from pyblaise import add_server_to_server_park
+from pyblaise import update_server_park
 
 from pyblaise.operations.definitions import operations
 
@@ -102,11 +102,7 @@ def test_add_server_to_server_park_api_call(host_info, requests_mock):
         text=mock_response_operation_success[0],
     )
 
-    add_server_to_server_park(
-        **host_info,
-        server_park_definition=server_park_definition,
-        new_server_definition=new_server
-    )
+    update_server_park(**host_info, server_park_definition=server_park_definition)
 
     assert requests_mock.last_request.scheme == host_info["protocol"]
     assert requests_mock.last_request.netloc == "%s:%i" % (
@@ -120,9 +116,7 @@ def test_add_server_to_server_park_api_call(host_info, requests_mock):
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_add_server_to_server_park_definition_operation_success(
-    host_info, requests_mock
-):
+def test_add_server_to_server_park_definition_operation_success(host_info, requests_mock):
     definition = operations["update-server-park-definition"]
 
     requests_mock.register_uri(
@@ -140,10 +134,9 @@ def test_add_server_to_server_park_definition_operation_success(
         text=mock_response_operation_success[0],
     )
 
-    status_code, message = add_server_to_server_park(
+    status_code, message = update_server_park(
         **host_info,
-        server_park_definition=server_park_definition,
-        new_server_definition=new_server
+        server_park_definition=server_park_definition
     )
 
     assert status_code == 200
@@ -171,14 +164,18 @@ def test_add_server_to_server_park_definition_new_server_in_request_body(
         text=mock_response_operation_success[0],
     )
 
-    status_code, message = add_server_to_server_park(
+    # create a new def
+    server_park_definition["servers"].append(new_server)
+
+    # send the dict to the function
+    status_code, message = update_server_park(
         **host_info,
-        server_park_definition=server_park_definition,
-        new_server_definition=new_server
+        server_park_definition=server_park_definition
     )
 
     assert status_code == 200
     assert message is not None
 
+    # check the new host is in the request body
     # FIXME: would be good to parse the request text here and check there are four servers in the update
     assert "host-04" in requests_mock.last_request.text

@@ -131,30 +131,26 @@ def get_server_park(protocol, host, port, token, server_park_name):
     return R.status_code, server_park_def
 
 
-def add_server_to_server_park(
-    protocol, host, port, token, server_park_definition, new_server_definition
-):
+def update_server_park(protocol, host, port, token, server_park_definition):
     """
-    add a new server to a server park
+    update a server park with a new definition
+
+    call 'get_server_park' to get the initial defintion, alter this spec and
+    pass it to this function for updating.
 
     protocol = (http|https)
     host = management server host
     port = management communication port (usually 8031)
     token = authentication token
     server_park_definition = definition of the server park to affect (retval of get_server_park)
-    new_server_definition = definition of the server to add (matching layout of get_server_park.servers blocks)
     """
-    # FIXME: we don't need this verbose jinja template, we can do:
-    #          server_park_definition["servers"] += new_server_definition
-    #        a push that definition into the update-server-park-definition soap
     R = basic_soap_request(
         "update-server-park-definition",
         protocol,
         host,
         port,
         TOKEN=token,
-        SERVER_PARK=server_park_definition,
-        NEW_SERVER=new_server_definition,
+        SERVER_PARK=server_park_definition
     )
     logger.debug(R.text)
 

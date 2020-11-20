@@ -48,34 +48,7 @@
           <WebsiteName i:nil="true"/>
         </ServerDefinition201906>
         {% endfor %}
-
-        <ServerDefinition201906>
-          <Binding>{{ NEW_SERVER.binding }}</Binding>
-          <BlaiseVersion i:nil="true" xmlns:a="http://www.blaise.com/common/2019/06"/>
-          <ExternalName i:nil="true"/>
-          <ExtraInfo i:nil="true" xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <IPAddressV4>{{ NEW_SERVER["ip-v4"] }}</IPAddressV4>
-          <IPAddressV6>{{ NEW_SERVER["ip-v6"] }}</IPAddressV6>
-          <Location i:nil="true"/>
-          <LogicalRoot>default</LogicalRoot>
-
-          {% if "master-hostname" in NEW_SERVER %}
-            <MasterHostName>{{ NEW_SERVER["master-hostname"] }}</MasterHostName>
-          {% else %}
-            <MasterHostName i:nil="true"/>
-          {% endif %}
-
-          <Name>{{ NEW_SERVER.hostname }}</Name>
-          <Port>{{ NEW_SERVER.port }}</Port>
-
-          <Roles xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
-            {% for ROLE in NEW_SERVER.roles %}
-            <a:string>{{ ROLE }}</a:string>
-            {% endfor %}
-          </Roles>
-          <Status i:nil="true"/>
-          <WebsiteName i:nil="true"/>
-        </ServerDefinition201906>
+      </Servers>
     </definitionToUpdate>
   </UpdateServerParkDefinition201906>
 </s:Body>

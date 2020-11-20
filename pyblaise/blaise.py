@@ -1,5 +1,4 @@
 from .operations import (
-    add_server_to_server_park,
     create_role,
     create_user,
     get_auth_token,
@@ -11,6 +10,7 @@ from .operations import (
     get_server_version,
     get_skills,
     get_version,
+    update_server_park
 )
 
 

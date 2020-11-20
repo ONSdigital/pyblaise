@@ -1,5 +1,4 @@
 from .operations import (
-    add_server_to_server_park,
     create_role,
     create_user,
     get_manifest_id_from_zip,
@@ -18,6 +17,7 @@ from .operations import (
     is_interactive_connection_allowed,
     remove_instrument,
     report_user_logout,
+    update_server_park
 )
 
 from .exceptions import *
