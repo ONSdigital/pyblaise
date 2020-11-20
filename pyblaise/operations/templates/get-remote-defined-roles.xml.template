@@ -1,10 +1,12 @@
 {% include "file-header.xml.template" %}
 {% include "auth-header.xml.template" %}
 
-<GetRemoteDefinedRoles201711 xmlns="http://www.blaise.com/deploy/2017/11">
-  <binding>{{ BINDING }}</binding>
-  <remoteServer>{{ REMOTE_HOST }}</remoteServer>
-  <remotePort>{{ REMOTE_PORT }}</remotePort>
-</GetRemoteDefinedRoles201711>
+<s:Body>
+  <GetRemoteDefinedRoles201711 xmlns="http://www.blaise.com/deploy/2017/11">
+    <binding>{{ BINDING }}</binding>
+    <remoteServer>{{ REMOTE_HOST }}</remoteServer>
+    <remotePort>{{ REMOTE_PORT }}</remotePort>
+  </GetRemoteDefinedRoles201711>
+</s:Body>
 
 {% include "file-footer.xml.template" %}
