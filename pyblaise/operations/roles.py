@@ -5,7 +5,7 @@ roles are groups of permissions which may be applied to nodes or users
 """
 import logging
 
-from .soap_utils import (
+from pyblaise.soap_utils import (
     basic_soap_request,
     parse_response_for_tag,
     parse_response_for_tag_contents,

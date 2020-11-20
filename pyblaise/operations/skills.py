@@ -5,7 +5,7 @@ I don't know what skills are
 """
 import logging
 
-from .soap_utils import (
+from pyblaise.soap_utils import (
     basic_soap_request,
     parse_response_for_tag
 )

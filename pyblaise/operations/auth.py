@@ -3,7 +3,7 @@ authentication resources exposed by Blaise
 """
 import logging
 
-from .soap_utils import (
+from pyblaise.soap_utils import (
     basic_soap_request,
     parse_response_for_tag_contents,
 )

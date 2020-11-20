@@ -6,7 +6,7 @@ one or more virtual or physical machines on the same network.
 """
 import logging
 
-from .soap_utils import (
+from pyblaise.soap_utils import (
     basic_soap_request,
     parse_response_for_tag,
     parse_response_for_tags,

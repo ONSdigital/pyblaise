@@ -10,7 +10,7 @@ testing, etc.
 """
 import logging
 
-from .soap_utils import (
+from pyblaise.soap_utils import (
     create_soap_from_template,
     basic_soap_request,
     parse_response_for_tag,

@@ -1,4 +1,4 @@
-from operations import (
+from .operations import (
     create_role,
     create_user,
     get_manifest_id_from_zip,
@@ -17,9 +17,11 @@ from operations import (
     report_user_logout,
 )
 
+from .exceptions import *
+from .operations.exceptions import *
+
 from .upload_survey import upload_survey
 
-from .exceptions import *
 from .constants import *
 
 from .blaise import Blaise

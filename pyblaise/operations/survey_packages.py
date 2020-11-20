@@ -8,7 +8,7 @@ These utility functions are for performing operations on the package files.
 """
 import logging
 
-from .soap_utils import (
+from pyblaise.soap_utils import (
     create_soap_from_template,
 )
 

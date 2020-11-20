@@ -33,6 +33,7 @@ from .instruments import get_list_of_instruments, remove_instrument
 from .misc import is_interactive_connection_allowed, get_server_version, get_version
 from .roles import get_roles, create_role
 from .server_park import get_server_park_definitions
+from .skills import get_skills
 from .users import get_all_users, create_user
 
 # utility unctions
