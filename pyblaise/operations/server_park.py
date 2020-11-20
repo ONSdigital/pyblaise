@@ -150,7 +150,7 @@ def update_server_park(protocol, host, port, token, server_park_definition):
         host,
         port,
         TOKEN=token,
-        SERVER_PARK=server_park_definition
+        SERVER_PARK=server_park_definition,
     )
     logger.debug(R.text)
 
