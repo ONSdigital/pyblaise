@@ -118,7 +118,9 @@ def create_role(protocol, host, port, token, name, description, permissions):
     return R.status_code, int(role_id)
 
 
-def get_remote_defined_roles(protocol, host, port, token, binding, remote_host, remote_port):
+def get_remote_defined_roles(
+    protocol, host, port, token, binding, remote_host, remote_port
+):
     """
     get the list of roles defined for the remote instance
 
@@ -126,11 +128,21 @@ def get_remote_defined_roles(protocol, host, port, token, binding, remote_host, 
     remote_host: resolveable name of the remote host
     remote_port: management communication port on the remote (usually 8031)
     """
-    R = basic_soap_request("get-remote-defined-roles",
-        protocol, host, port, TOKEN=token, BINDING=binding, REMOTE_HOST=remote_host, REMOTE_PORT=remote_port)
+    R = basic_soap_request(
+        "get-remote-defined-roles",
+        protocol,
+        host,
+        port,
+        TOKEN=token,
+        BINDING=binding,
+        REMOTE_HOST=remote_host,
+        REMOTE_PORT=remote_port,
+    )
     logger.debug(R.text)
 
-    response = parse_response_for_tag_contents(R.text, "GetRemoteDefinedRoles201711Result")
+    response = parse_response_for_tag_contents(
+        R.text, "GetRemoteDefinedRoles201711Result"
+    )
 
     if response is None:
         return R.status_code, []

@@ -52,6 +52,7 @@ mock_response_two_roles = [
 """
 ]
 
+
 @pytest.mark.parametrize("host_info", host_infos)
 def test_get_remote_defined_roles_api_call(host_info, requests_mock):
     definition = operations["get-remote-defined-roles"]
@@ -71,7 +72,9 @@ def test_get_remote_defined_roles_api_call(host_info, requests_mock):
         text=mock_response_two_roles[0],
     )
 
-    get_remote_defined_roles(**host_info, binding="http", remote_host="remote", remote_port="port")
+    get_remote_defined_roles(
+        **host_info, binding="http", remote_host="remote", remote_port="port"
+    )
 
     assert requests_mock.last_request.scheme == host_info["protocol"]
     assert requests_mock.last_request.netloc == "%s:%i" % (
@@ -103,7 +106,9 @@ def test_get_remote_defined_roles_parse_no_roles(host_info, requests_mock):
         text=mock_response_no_roles[0],
     )
 
-    status_code, roles = get_remote_defined_roles(**host_info, binding="http", remote_host="remote", remote_port="port")
+    status_code, roles = get_remote_defined_roles(
+        **host_info, binding="http", remote_host="remote", remote_port="port"
+    )
 
     assert status_code == 200
     assert isinstance(roles, list)
@@ -129,7 +134,9 @@ def test_get_remote_defined_roles_parse_two_roles(host_info, requests_mock):
         text=mock_response_two_roles[0],
     )
 
-    status_code, roles = get_remote_defined_roles(**host_info, binding="http", remote_host="remote", remote_port="port")
+    status_code, roles = get_remote_defined_roles(
+        **host_info, binding="http", remote_host="remote", remote_port="port"
+    )
 
     assert status_code == 200
     assert isinstance(roles, list)
@@ -137,7 +144,9 @@ def test_get_remote_defined_roles_parse_two_roles(host_info, requests_mock):
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_get_remote_defined_roles_parse_two_roles_returns_correct_values(host_info, requests_mock):
+def test_get_remote_defined_roles_parse_two_roles_returns_correct_values(
+    host_info, requests_mock
+):
     definition = operations["get-remote-defined-roles"]
 
     requests_mock.register_uri(
@@ -155,7 +164,9 @@ def test_get_remote_defined_roles_parse_two_roles_returns_correct_values(host_in
         text=mock_response_two_roles[0],
     )
 
-    status_code, roles = get_remote_defined_roles(**host_info, binding="http", remote_host="remote", remote_port="port")
+    status_code, roles = get_remote_defined_roles(
+        **host_info, binding="http", remote_host="remote", remote_port="port"
+    )
 
     assert status_code == 200
     assert isinstance(roles, list)

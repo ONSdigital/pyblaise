@@ -102,7 +102,7 @@ operations = {
         "headers": {
             "SOAPAction": "http://www.blaise.com/deploy/2017/11/IDeployService/GetRemoteDefinedRoles201711"
         },
-    }
+    },
 }
 
 default_headers = {
