@@ -116,4 +116,6 @@ class Blaise:
 
     def server_park(self, name):
         """get info about a server-park"""
-        return get_server_park(**self.connection_info, token=self.token, server_park_name=name)
+        return get_server_park(
+            **self.connection_info, token=self.token, server_park_name=name
+        )
