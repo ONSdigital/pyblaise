@@ -1,11 +1,26 @@
-name: auto-format
-on: push
+#
+# lint and test the code on push
+# to any branch except master
+#
+# push-to-master is disabled; any push to master must have passed lint+test
+#
+
+name: lint+test
+on:
+  push:
+    branches-ignore:
+      - master
+    tags-ignore:
+      - "**"
+
 jobs:
   format:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
+      with:
+        fetch-depth: 0
 
     - name: black
       uses: lgeiger/black-action@master
@@ -39,13 +54,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: set up python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-
-    - uses: actions/checkout@v2
 
     - name: install pyblaise
       run: pip install .

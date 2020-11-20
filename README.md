@@ -27,6 +27,50 @@ with Blaise("https", "my.blaise.com", 8031, username, password) as blaise:
   server_parks = blaise.get_server_park_definitions()
 ```
 
+## Development
+
+### Versioning
+
+Follow the [PEP440 specification](https://www.python.org/dev/peps/pep-0440).
+i.e.:
+```
+v0.1.4      # actual version 0.1.4
+v2.4.1rc1   # release candidate 1
+v1.3.4dev3  # developer version 3
+```
+
+This is handled in the `setup.py` function.
+
+Process:
++ develop in branch
+```
+git checkout -b my-branch
+git add ...
+git commit ...
+```
+
++ push to github
+```
+git push origin my-branch
+```
+
++ pull automated changes from github
+```
+git pull origin my-branch
+```
+
++ tag the release
+```
+git tag -a <my-tag-name> -m "<my tag message>"
+```
+
++ push the tag
+```
+git push origin --tags
+```
+
+
+
 ## Blaise SOAP Interface Overview
 
 Blaise has five resources, each with a [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
