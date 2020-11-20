@@ -134,7 +134,9 @@ def test_get_server_park_definition_api_call(host_info, requests_mock):
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_get_server_park_definition_parse_definition_returns_name(host_info, requests_mock):
+def test_get_server_park_definition_parse_definition_returns_name(
+    host_info, requests_mock
+):
     definition = operations["get-server-park-definition"]
 
     requests_mock.register_uri(
@@ -162,7 +164,9 @@ def test_get_server_park_definition_parse_definition_returns_name(host_info, req
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_get_server_park_definition_parse_definition_returns_server_park_name(host_info, requests_mock):
+def test_get_server_park_definition_parse_definition_returns_server_park_name(
+    host_info, requests_mock
+):
     definition = operations["get-server-park-definition"]
 
     requests_mock.register_uri(
@@ -189,7 +193,9 @@ def test_get_server_park_definition_parse_definition_returns_server_park_name(ho
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_get_server_park_definition_parse_definition_returns_data(host_info, requests_mock):
+def test_get_server_park_definition_parse_definition_returns_data(
+    host_info, requests_mock
+):
     definition = operations["get-server-park-definition"]
 
     requests_mock.register_uri(
@@ -240,7 +246,9 @@ def test_get_server_park_definition_parse_definition_returns_data(host_info, req
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_get_server_park_definition_parse_definition_returns_data_for_three_servers(host_info, requests_mock):
+def test_get_server_park_definition_parse_definition_returns_data_for_three_servers(
+    host_info, requests_mock
+):
     definition = operations["get-server-park-definition"]
 
     requests_mock.register_uri(
@@ -268,7 +276,9 @@ def test_get_server_park_definition_parse_definition_returns_data_for_three_serv
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_get_server_park_definition_parse_definition_returns_data_for_first_server(host_info, requests_mock):
+def test_get_server_park_definition_parse_definition_returns_data_for_first_server(
+    host_info, requests_mock
+):
     definition = operations["get-server-park-definition"]
 
     requests_mock.register_uri(
@@ -313,7 +323,9 @@ def test_get_server_park_definition_parse_definition_returns_data_for_first_serv
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_get_server_park_definition_parse_definition_returns_data_for_second_server(host_info, requests_mock):
+def test_get_server_park_definition_parse_definition_returns_data_for_second_server(
+    host_info, requests_mock
+):
     definition = operations["get-server-park-definition"]
 
     requests_mock.register_uri(
@@ -359,7 +371,9 @@ def test_get_server_park_definition_parse_definition_returns_data_for_second_ser
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_get_server_park_definition_parse_definition_returns_data_for_third_server(host_info, requests_mock):
+def test_get_server_park_definition_parse_definition_returns_data_for_third_server(
+    host_info, requests_mock
+):
     definition = operations["get-server-park-definition"]
 
     requests_mock.register_uri(
