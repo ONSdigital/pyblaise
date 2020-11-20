@@ -55,5 +55,5 @@ setuptools.setup(
     ],
     python_requires=">=3.6",
     install_requires=["jinja2", "requests", "requests_mock"],
-    package_data={"pyblaise": ["templates/*.template", "templates/survey/*.template"]},
+    package_data={"pyblaise": ["operations/templates/*.template", "operations/templates/survey/*.template"]},
 )
