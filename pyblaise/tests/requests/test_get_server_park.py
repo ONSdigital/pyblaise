@@ -18,7 +18,7 @@ host_infos = [
 ]
 
 mock_response_one_server_park = [
-    """
+    r"""
 <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
   <s:Body>
     <GetServerParkDefinition201906Response xmlns="http://www.blaise.com/deploy/2019/06">
@@ -235,7 +235,7 @@ def test_get_server_park_definition_parse_definition_returns_data(
     assert server_park["delete-data-after-upload"] == "false"
     assert server_park["download-surveys-only-if-cases-are-available"] == "false"
     assert server_park["is-public"] == "false"
-    assert server_park["location"] == "D:\Blaise5\Surveys"
+    assert server_park["location"] == r"D:\Blaise5\Surveys"
     assert server_park["master-address"] == "blaise-gusty-mgmt:8031"
     assert server_park["name"] == "gusty"
     assert server_park["run-mode"] == "ThinClient"
