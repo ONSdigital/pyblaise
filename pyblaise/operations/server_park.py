@@ -129,3 +129,37 @@ def get_server_park(protocol, host, port, token, server_park_name):
             ]
 
     return R.status_code, server_park_def
+
+
+def add_server_to_server_park(protocol, host, port, token, server_park_definition, new_server_definition):
+    """
+    add a new server to a server park
+
+    protocol = (http|https)
+    host = management server host
+    port = management communication port (usually 8031)
+    token = authentication token
+    server_park_definition = definition of the server park to affect (retval of get_server_park)
+    new_server_definition = definition of the server to add (matching layout of get_server_park.servers blocks)
+    """
+    R = basic_soap_request(
+        "update-server-park-definition",
+        protocol,
+        host,
+        port,
+        TOKEN=token,
+        SERVER_PARK=server_park_definition,
+        NEW_SERVER=new_server_definition
+    )
+    logger.debug(R.text)
+
+    has_tag = parse_response_for_tag(R.text, "UpdateServerParkDefinition201906Response")
+
+    if has_tag is False:
+        return R.status_code, []
+
+    results = parse_response_for_tag_contents(R.text, "UpdateServerParkDefinition201906Result")
+    message = parse_response_for_tag_contents(results, "a:Message")
+    status_code = parse_response_for_tag_contents(results, "a:StatusCode")
+
+    return R.status_code, message

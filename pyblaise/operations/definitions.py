@@ -110,6 +110,13 @@ operations = {
             "SOAPAction": "http://www.blaise.com/deploy/2017/11/IDeployService/GetRemoteDefinedRoles201711"
         },
     },
+    "update-server-park-definition": {
+        "template": "update-server-park-definition.xml.template",
+        "path": "/Blaise/Administer/Services/Deploy",
+        "headers": {
+            "SOAPAction": "http://www.blaise.com/deploy/2019/06/IDeployService/UpdateServerParkDefinition201906"
+        }
+    }
 }
 
 default_headers = {

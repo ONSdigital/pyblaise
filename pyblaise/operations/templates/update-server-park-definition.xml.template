@@ -1,0 +1,82 @@
+{% include "file-header.xml.template" %}
+{% include "auth-header.xml.template" %}
+<s:Body>
+  <UpdateServerParkDefinition201906 xmlns="http://www.blaise.com/deploy/2019/06">
+    <definitionToUpdate xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+
+      <AuditTrailMode>{{ SERVER_PARK["audit-trail-mode"] }}</AuditTrailMode>
+      <DeleteDataAfterUpload>{{ SERVER_PARK["delete-data-after-upload"] }}</DeleteDataAfterUpload>
+      <DownloadSurveysOnlyIfCasesAreAvailable>{{ SERVER_PARK["download-surveys-only-if-cases-are-available"] }}</DownloadSurveysOnlyIfCasesAreAvailable>
+      <IsPublic>{{ SERVER_PARK["is-public"] }}</IsPublic>
+      <LoadBalancer i:nil="true"/>
+      <Location>{{ SERVER_PARK["location"] }}</Location>
+      <MasterAddress>{{ SERVER_PARK["master-address"] }}</MasterAddress>
+      <Name>{{ SERVER_PARK["name"] }}</Name>
+      <RunMode>{{ SERVER_PARK["run-mode"] }}</RunMode>
+      <SessionMode>{{ SERVER_PARK["session-mode"] }}</SessionMode>
+      <SyncDataWhenConnected>{{ SERVER_PARK["sync-data-when-connected"] }}</SyncDataWhenConnected>
+      <SyncSurveysWhenConnected>{{ SERVER_PARK["sync-surveys-when-connected"] }}</SyncSurveysWhenConnected>
+      <WebsiteName>{{ SERVER_PARK["website-name"] }}</WebsiteName>
+
+      <Servers>
+        {% for SERVER in SERVER_PARK.servers %}
+        <ServerDefinition201906>
+          <Binding>{{ SERVER.binding }}</Binding>
+          <BlaiseVersion i:nil="true" xmlns:a="http://www.blaise.com/common/2019/06"/>
+          <ExternalName i:nil="true"/>
+          <ExtraInfo i:nil="true" xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <IPAddressV4>{{ SERVER["ip-v4"] }}</IPAddressV4>
+          <IPAddressV6>{{ SERVER["ip-v6"] }}</IPAddressV6>
+          <Location i:nil="true"/>
+          <LogicalRoot>default</LogicalRoot>
+
+          {% if "master-hostname" in SERVER %}
+            <MasterHostName>{{ SERVER["master-hostname"] }}</MasterHostName>
+          {% else %}
+            <MasterHostName i:nil="true"/>
+          {% endif %}
+
+          <Name>{{ SERVER.hostname }}</Name>
+          <Port>{{ SERVER.port }}</Port>
+
+          <Roles xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+            {% for ROLE in SERVER.roles %}
+            <a:string>{{ ROLE }}</a:string>
+            {% endfor %}
+          </Roles>
+          <Status i:nil="true"/>
+          <WebsiteName i:nil="true"/>
+        </ServerDefinition201906>
+        {% endfor %}
+
+        <ServerDefinition201906>
+          <Binding>{{ NEW_SERVER.binding }}</Binding>
+          <BlaiseVersion i:nil="true" xmlns:a="http://www.blaise.com/common/2019/06"/>
+          <ExternalName i:nil="true"/>
+          <ExtraInfo i:nil="true" xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <IPAddressV4>{{ NEW_SERVER["ip-v4"] }}</IPAddressV4>
+          <IPAddressV6>{{ NEW_SERVER["ip-v6"] }}</IPAddressV6>
+          <Location i:nil="true"/>
+          <LogicalRoot>default</LogicalRoot>
+
+          {% if "master-hostname" in NEW_SERVER %}
+            <MasterHostName>{{ NEW_SERVER["master-hostname"] }}</MasterHostName>
+          {% else %}
+            <MasterHostName i:nil="true"/>
+          {% endif %}
+
+          <Name>{{ NEW_SERVER.hostname }}</Name>
+          <Port>{{ NEW_SERVER.port }}</Port>
+
+          <Roles xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+            {% for ROLE in NEW_SERVER.roles %}
+            <a:string>{{ ROLE }}</a:string>
+            {% endfor %}
+          </Roles>
+          <Status i:nil="true"/>
+          <WebsiteName i:nil="true"/>
+        </ServerDefinition201906>
+    </definitionToUpdate>
+  </UpdateServerParkDefinition201906>
+</s:Body>
+{% include "file-footer.xml.template" %}
