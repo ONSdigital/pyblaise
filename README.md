@@ -29,6 +29,18 @@ with Blaise("https", "my.blaise.com", 8031, username, password) as blaise:
 
 ## Development
 
+### Testing
+
+`pytest` tests are defined in the module
+
+for development:
++ create a virtualenv `virtualenv -p python3 venv; source venv/bin/activate`
++ install the package locally `pip install -e pyblaise`
++ run `pytest .`
+
+The same tests are run by GithubActions on push.
+
+
 ### Versioning
 
 Follow the [PEP440 specification](https://www.python.org/dev/peps/pep-0440).
