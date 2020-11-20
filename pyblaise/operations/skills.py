@@ -5,10 +5,7 @@ I don't know what skills are
 """
 import logging
 
-from pyblaise.soap_utils import (
-    basic_soap_request,
-    parse_response_for_tag
-)
+from pyblaise.soap_utils import basic_soap_request, parse_response_for_tag
 
 from .exceptions import *
 

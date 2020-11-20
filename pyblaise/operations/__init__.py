@@ -37,4 +37,8 @@ from .skills import get_skills
 from .users import get_all_users, create_user
 
 # utility unctions
-from .survey_packages import get_manifest_id_from_zip, create_survey_manifest, create_survey_from_existing
+from .survey_packages import (
+    get_manifest_id_from_zip,
+    create_survey_manifest,
+    create_survey_from_existing,
+)
