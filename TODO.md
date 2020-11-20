@@ -9,3 +9,8 @@
     + currently, new soap operations require new tests to be written
     + much better to automatically test some aspects of the soap stuff
     + BLOCKED: soap templates need specific parameters, we can't set defaults (it seems?)
+
++ expose via REST API
+    + `api` submodule which has a bunch of standalone flask servers
+    + preparation to support the c# migration
+    + understand the sequencing of calls
