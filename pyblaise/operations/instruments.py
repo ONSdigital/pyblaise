@@ -10,7 +10,7 @@ import logging
 
 from pyblaise.soap_utils import (
     basic_soap_request,
-    parse_response_for_tag_contents,
+    parse_response_for_tag_contents, parse_response_for_tags_contents,
 )
 
 from .exceptions import *
