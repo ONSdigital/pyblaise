@@ -150,7 +150,10 @@ class Blaise:
             remote_host=server_name,
             remote_port=remote_port
         )
-        self.logger.debug("get_remote_defined_roles '%s' returned [%i](%i roles)'%s'" % (server_name, status_code, len(roles), json.dumps(roles)))
+        self.logger.debug(
+            "get_remote_defined_roles '%s' returned [%i](%i roles)'%s'"
+            % (server_name, status_code, len(roles), json.dumps(roles))
+        )
 
         # create the server definition
         # FIXME: we need to create a new server definition for each role defined on the remote
@@ -171,7 +174,10 @@ class Blaise:
 
         # get the existing server park definition
         status_code, server_park_definition = self.server_park(server_park_name)
-        self.logger.debug("get_server_park '%s' returned: [%i]'%s'" % (server_park_name, status_code, json.dumps(server_park_definition)))
+        self.logger.debug(
+            "get_server_park '%s' returned: [%i]'%s'"
+            % (server_park_name, status_code, json.dumps(server_park_definition))
+        )
 
         # update the definition with the new roles
         server_park_definition["servers"].append(new_server_roles)
@@ -182,7 +188,10 @@ class Blaise:
             token=self.token,
             server_park_definition=server_park_definition
         )
-        self.logger.debug("update_server_park '%s' returned: [%i]'%s'" % (server_park_name, status_code, message))
+        self.logger.debug(
+            "update_server_park '%s' returned: [%i]'%s'"
+            % (server_park_name, status_code, message)
+        )
 
         # FIXME: confirm the node is added to the server park by calling:
         #          http://www.blaise.com/deploy/2017/11/IDeployService/GetRemoteMasterAddress201711
