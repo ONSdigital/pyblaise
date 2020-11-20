@@ -116,7 +116,9 @@ def test_add_server_to_server_park_api_call(host_info, requests_mock):
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_add_server_to_server_park_definition_operation_success(host_info, requests_mock):
+def test_add_server_to_server_park_definition_operation_success(
+    host_info, requests_mock
+):
     definition = operations["update-server-park-definition"]
 
     requests_mock.register_uri(
@@ -135,8 +137,7 @@ def test_add_server_to_server_park_definition_operation_success(host_info, reque
     )
 
     status_code, message = update_server_park(
-        **host_info,
-        server_park_definition=server_park_definition
+        **host_info, server_park_definition=server_park_definition
     )
 
     assert status_code == 200
@@ -169,8 +170,7 @@ def test_add_server_to_server_park_definition_new_server_in_request_body(
 
     # send the dict to the function
     status_code, message = update_server_park(
-        **host_info,
-        server_park_definition=server_park_definition
+        **host_info, server_park_definition=server_park_definition
     )
 
     assert status_code == 200

@@ -10,7 +10,7 @@ from .operations import (
     get_server_version,
     get_skills,
     get_version,
-    update_server_park
+    update_server_park,
 )
 
 

@@ -17,7 +17,7 @@ from .operations import (
     is_interactive_connection_allowed,
     remove_instrument,
     report_user_logout,
-    update_server_park
+    update_server_park,
 )
 
 from .exceptions import *
