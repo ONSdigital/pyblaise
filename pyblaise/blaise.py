@@ -1,3 +1,5 @@
+import logging
+
 from .operations import (
     create_role,
     create_user,
@@ -25,6 +27,7 @@ class Blaise:
     """
 
     def __init__(self, protocol, host, port, username, password):
+        self.logger = logging.getLogger(__name__)
         self.open(protocol, host, port, username, password)
 
     def __enter__(self):
@@ -123,22 +126,31 @@ class Blaise:
 
     def add_server_to_server_park(self, server_park_name, server_name):
         """add an existing server to an existing server park"""
+        import json
+
         # get the remote IP
         # FIXME: there is soap action: http://www.blaise.com/deploy/2013/03/IDeployService/GetIpAddresses
         #        which gets the ipv4 and ipv6 addresses (and I assume checks the mgmt server can connect)
+        self.logger.debug("getting ipv4 and ipv6 address for '%s'" % server_name)
         remote_ipv4 = socket.gethostbyname(server_name)
         remote_ipv6 = socket.getaddrinfo(server_name, remote_port, socket.AF_INET6)[0][
             4
         ][0]
 
+        # FIXME: where does remote_binding initially come from?
+        remote_binding = "http"
+        # FIXME: where does remote_port come from?
+        remote_port = 8031
+
         # get the remote ROLES
-        _, roles = get_remote_defined_roles(
+        status_code, roles = get_remote_defined_roles(
             **self.connection_info,
             token=self.token,
             binding=remote_binding,
             remote_host=server_name,
             remote_port=remote_port
         )
+        self.logger.debug("get_remote_defined_roles '%s' returned [%i](%i roles)'%s'" % (server_name, status_code, len(roles), json.dumps(roles)))
 
         # create the server definition
         # FIXME: we need to create a new server definition for each role defined on the remote
@@ -154,21 +166,23 @@ class Blaise:
             }
             for role in roles
         ]
+        self.logger.debug("created %i roles from remote" % (len(new_server_roles)))
+        self.logger.debug(json.dumps(new_server_roles))
 
         # get the existing server park definition
-        _, server_park_definition = self.server_park(server_park_name)
+        status_code, server_park_definition = self.server_park(server_park_name)
+        self.logger.debug("get_server_park '%s' returned: [%i]'%s'" % (server_park_name, status_code, json.dumps(server_park_definition)))
 
-        # call add_server_to_server_park
-        # FIXME: 'add_server_to_server_park' is implemented wrong: we can only add one server role at a time, but if we have multiple
-        #        roles defining multiple binding/port/host tuples then we should append the 'new_server_definition'
-        #        list to the 'server_park_definition.servers' list and push that to the management server with this
-        #        function (there is a comment on this function about this issue)
-        add_server_to_server_park(
+        # update the definition with the new roles
+        server_park_definition["servers"].append(new_server_roles))
+
+        # update the server park
+        status_code, message = update_server_park(
             **self.connection_info,
             token=self.token,
-            server_park_definition=server_park_definition,
-            new_server=new_server_definition
+            server_park_definition=server_park_definition
         )
+        self.logger.debug("update_server_park '%s' returned: [%i]'%s'" % (server_park_name, status_code, message))
 
         # FIXME: confirm the node is added to the server park by calling:
         #          http://www.blaise.com/deploy/2017/11/IDeployService/GetRemoteMasterAddress201711
