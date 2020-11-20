@@ -1,4 +1,4 @@
-from .operations import (
+from operations import (
     create_role,
     create_user,
     get_manifest_id_from_zip,
