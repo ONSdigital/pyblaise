@@ -6,7 +6,7 @@ from collections import namedtuple
 
 from pyblaise import get_all_users
 
-from pyblaise.definitions import operations
+from pyblaise.operations.definitions import operations
 
 host_infos = [
     {

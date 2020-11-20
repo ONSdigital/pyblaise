@@ -4,7 +4,7 @@ import xml.etree.ElementTree
 
 import jinja2
 
-from pyblaise.definitions import operations
+from pyblaise.operations.definitions import operations
 from pyblaise.soap_utils import create_soap_from_template, env as template_env
 
 template_filenames = [operations[k]["template"] for k in operations]
