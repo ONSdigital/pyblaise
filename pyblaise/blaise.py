@@ -3,9 +3,10 @@ from .operations import (
     create_user,
     get_auth_token,
     get_all_users,
+    get_all_server_parks,
     get_list_of_instruments,
     get_roles,
-    get_server_park_definitions,
+    get_server_park,
     get_server_version,
     get_skills,
     get_version,
@@ -109,6 +110,10 @@ class Blaise:
         """get a list of skills from the server"""
         return get_skills(**self.connection_info, token=self.token)
 
-    def server_park_definitions(self):
+    def server_parks(self):
         """get a list of server parks and definitions from the server"""
-        return get_server_park_definitions(**self.connection_info, token=self.token)
+        return get_all_server_parks(**self.connection_info, token=self.token)
+
+    def server_park(self, name):
+        """get info about a server-park"""
+        return get_server_park(**self.connection_info, token=self.token, server_park_name=name)

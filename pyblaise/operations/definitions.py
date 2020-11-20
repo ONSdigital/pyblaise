@@ -47,6 +47,13 @@ operations = {
             "SOAPAction": "http://www.blaise.com/deploy/2019/06/IDeployService/GetAllServerParkDefinitions201906",
         },
     },
+    "get-server-park-definition": {
+        "template": "get-server-park-definition.xml.template",
+        "path": "/Blaise/Administer/Services/Deploy",
+        "headers": {
+            "SOAPAction": "http://www.blaise.com/deploy/2019/06/IDeployService/GetServerParkDefinition201906",
+        },
+    },
     "get-server-version": {
         "template": "get-server-version.xml.template",
         "path": "/Blaise/Administer/Services/Deploy",
