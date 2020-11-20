@@ -96,6 +96,13 @@ operations = {
             "SOAPAction": "http://www.blaise.com/security/2018/12/ISecurityManagementService/CreateUser201812"
         },
     },
+    "get-remote-defined-roles": {
+        "template": "get-remote-defined-roles.xml.template",
+        "path": "/Blaise/Security/Services/SecurityManagementService",
+        "headers": {
+            "SOAPAction": "http://www.blaise.com/deploy/2017/11/IDeployService/GetRemoteDefinedRoles201711"
+        },
+    }
 }
 
 default_headers = {

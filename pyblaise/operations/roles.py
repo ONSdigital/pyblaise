@@ -9,6 +9,7 @@ from pyblaise.soap_utils import (
     basic_soap_request,
     parse_response_for_tag,
     parse_response_for_tag_contents,
+    parse_response_for_tags_contents,
 )
 
 from .exceptions import CreateRoleFailed
@@ -115,3 +116,34 @@ def create_role(protocol, host, port, token, name, description, permissions):
         raise CreateRoleFailed
 
     return R.status_code, int(role_id)
+
+
+def get_remote_defined_roles(protocol, host, port, token, binding, remote_host, remote_port):
+    """
+    get the list of roles defined for the remote instance
+
+    binding: (http|https)
+    remote_host: resolveable name of the remote host
+    remote_port: management communication port on the remote (usually 8031)
+    """
+    R = basic_soap_request("get-remote-defined-roles",
+        protocol, host, port, TOKEN=token, BINDING=binding, REMOTE_HOST=remote_host, REMOTE_PORT=remote_port)
+    logger.debug(R.text)
+
+    response = parse_response_for_tag_contents(R.text, "GetRemoteDefinedRoles201711Result")
+
+    if response is None:
+        return R.status_code, []
+
+    remote_roles = parse_response_for_tags_contents(response, "a:RoleInfo2")
+
+    roles = [
+        {
+            "name": parse_response_for_tag_contents(remote_role, "a:Name"),
+            "binding": parse_response_for_tag_contents(remote_role, "a:Binding"),
+            "port": parse_response_for_tag_contents(remote_role, "a:Port"),
+        }
+        for remote_role in remote_roles
+    ]
+
+    return R.status_code, roles

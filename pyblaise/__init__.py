@@ -7,6 +7,7 @@ from .operations import (
     get_auth_token,
     get_all_users,
     get_list_of_instruments,
+    get_remote_defined_roles,
     get_roles,
     get_server_park_definitions,
     get_server_version,
