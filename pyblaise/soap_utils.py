@@ -6,7 +6,7 @@ from os.path import join, dirname
 from jinja2 import Environment, FileSystemLoader, PackageLoader, select_autoescape
 from jinja2 import StrictUndefined
 
-from .definitions import operations, default_headers
+from .operations.definitions import operations, default_headers
 from .exceptions import *
 from .constants import *
 

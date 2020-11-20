@@ -14,7 +14,3 @@ class ServerConnectionError(Exception):
     """
 
     pass
-
-
-class CreateRoleFailed(Exception):
-    pass

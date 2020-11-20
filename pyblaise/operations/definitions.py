@@ -1,3 +1,9 @@
+"""
+definitions of operations
+
+mapping functions to SOAP calls/templates/HTTP headers
+"""
+
 operations = {
     "get-all-users": {
         "template": "get-all-users.xml.template",
