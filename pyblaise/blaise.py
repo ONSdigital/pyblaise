@@ -1,4 +1,5 @@
 from .operations import (
+    add_server_to_server_park,
     create_role,
     create_user,
     get_auth_token,
@@ -114,8 +115,45 @@ class Blaise:
         """get a list of server parks and definitions from the server"""
         return get_all_server_parks(**self.connection_info, token=self.token)
 
-    def server_park(self, name):
+    def server_park(self, server_park_name):
         """get info about a server-park"""
         return get_server_park(
-            **self.connection_info, token=self.token, server_park_name=name
+            **self.connection_info, token=self.token, server_park_name=server_park_name
         )
+
+    def add_server_to_server_park(self, server_park_name, server_name):
+        """add an existing server to an existing server park"""
+        # get the remote IP
+        # FIXME: there is soap action: http://www.blaise.com/deploy/2013/03/IDeployService/GetIpAddresses
+        #        which gets the ipv4 and ipv6 addresses (and I assume checks the mgmt server can connect)
+        remote_ipv4 = socket.gethostbyname(server_name)
+        remote_ipv6 = socket.getaddrinfo(server_name, remote_port, socket.AF_INET6)[0][4][0]
+
+
+        # get the remote ROLES
+        _, roles = get_remote_defined_roles(**self.connection_info, token=self.token, binding=remote_binding, remote_host=server_name, remote_port=remote_port)
+
+        # create the server definition
+        # FIXME: we need to create a new server definition for each role defined on the remote
+        #        the 'roles' dict contains the ports and bindings to use for the server def
+        new_server_roles = [{
+            "binding": role["binding"],
+            "ip-v4": remote_ipv4,
+            "ip-v6": remote_ipv6,
+            "hostname": server_name,
+            "port": role["port"],
+            "roles": role["name"]
+        } for role in roles]
+
+        # get the existing server park definition
+        _, server_park_definition = self.server_park(server_park_name)
+
+        # call add_server_to_server_park
+        # FIXME: 'add_server_to_server_park' is implemented wrong: we can only add one server role at a time, but if we have multiple
+        #        roles defining multiple binding/port/host tuples then we should append the 'new_server_definition'
+        #        list to the 'server_park_definition.servers' list and push that to the management server with this
+        #        function (there is a comment on this function about this issue)
+        add_server_to_server_park(**self.connection_info, token=self.token, server_park_definition=server_park_definition, new_server=new_server_definition)
+
+        # FIXME: confirm the node is added to the server park by calling:
+        #          http://www.blaise.com/deploy/2017/11/IDeployService/GetRemoteMasterAddress201711

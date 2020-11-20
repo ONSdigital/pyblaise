@@ -144,6 +144,9 @@ def add_server_to_server_park(
     server_park_definition = definition of the server park to affect (retval of get_server_park)
     new_server_definition = definition of the server to add (matching layout of get_server_park.servers blocks)
     """
+    # FIXME: we don't need this verbose jinja template, we can do:
+    #          server_park_definition["servers"] += new_server_definition
+    #        a push that definition into the update-server-park-definition soap
     R = basic_soap_request(
         "update-server-park-definition",
         protocol,
