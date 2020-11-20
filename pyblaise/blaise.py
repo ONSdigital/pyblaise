@@ -174,7 +174,7 @@ class Blaise:
         self.logger.debug("get_server_park '%s' returned: [%i]'%s'" % (server_park_name, status_code, json.dumps(server_park_definition)))
 
         # update the definition with the new roles
-        server_park_definition["servers"].append(new_server_roles))
+        server_park_definition["servers"].append(new_server_roles)
 
         # update the server park
         status_code, message = update_server_park(
