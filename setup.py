@@ -21,7 +21,7 @@ def get_git_version():
       https://www.python.org/dev/peps/pep-0440/
     """
     v = (
-        subprocess.check_output(["git", "describe"], encoding="UTF-8")
+        subprocess.check_output(["git", "describe", "--always"], encoding="UTF-8")
         .strip()
         .split("-")
     )
