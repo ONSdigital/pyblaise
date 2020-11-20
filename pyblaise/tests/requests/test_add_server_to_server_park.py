@@ -18,54 +18,53 @@ host_infos = [
 ]
 
 server_park_definition = {
-"audit-trail-mode": "false",
-"delete-data-after-upload": "false",
-"download-surveys-only-if-cases-are-available": "false",
-"is-public": "false",
-"location": r"D:\Blaise5\Surveys",
-"master-address": "blaise-gusty-mgmt:8031",
-"name": "gusty",
-"run-mode": "ThinClient",
-"session-mode": "Local",
-"sync-data-when-connected": "false",
-"sync-surveys-when-connected": "false",
-"website-name": "1",
-
-"servers": [
-{
-"binding": "http",
-"ip-v4": "127.0.0.1",
-"ip-v6": "notip",
-"hostname": "host-01",
-"port": "8031",
-"roles": ["ADMIN"]
-},
-{
-"binding": "http",
-"ip-v4": "127.0.0.2",
-"ip-v6": "notip",
-"hostname": "host-02",
-"port": "8033",
-"roles": ["SESSION", "RESOURCE"]
-},
-{
-"binding": "http",
-"ip-v4": "127.0.0.3",
-"ip-v6": "notip",
-"hostname": "host-03",
-"port": "0",
-"roles": ["DASHBOARD"]
-},
-]
+    "audit-trail-mode": "false",
+    "delete-data-after-upload": "false",
+    "download-surveys-only-if-cases-are-available": "false",
+    "is-public": "false",
+    "location": r"D:\Blaise5\Surveys",
+    "master-address": "blaise-gusty-mgmt:8031",
+    "name": "gusty",
+    "run-mode": "ThinClient",
+    "session-mode": "Local",
+    "sync-data-when-connected": "false",
+    "sync-surveys-when-connected": "false",
+    "website-name": "1",
+    "servers": [
+        {
+            "binding": "http",
+            "ip-v4": "127.0.0.1",
+            "ip-v6": "notip",
+            "hostname": "host-01",
+            "port": "8031",
+            "roles": ["ADMIN"],
+        },
+        {
+            "binding": "http",
+            "ip-v4": "127.0.0.2",
+            "ip-v6": "notip",
+            "hostname": "host-02",
+            "port": "8033",
+            "roles": ["SESSION", "RESOURCE"],
+        },
+        {
+            "binding": "http",
+            "ip-v4": "127.0.0.3",
+            "ip-v6": "notip",
+            "hostname": "host-03",
+            "port": "0",
+            "roles": ["DASHBOARD"],
+        },
+    ],
 }
 
 new_server = {
-"binding": "http",
-"ip-v4": "127.0.0.4",
-"ip-v6": "notip",
-"hostname": "host-04",
-"port": "8031",
-"roles": ["DATA"]
+    "binding": "http",
+    "ip-v4": "127.0.0.4",
+    "ip-v6": "notip",
+    "hostname": "host-04",
+    "port": "8031",
+    "roles": ["DATA"],
 }
 
 mock_response_operation_success = [
@@ -103,7 +102,11 @@ def test_add_server_to_server_park_api_call(host_info, requests_mock):
         text=mock_response_operation_success[0],
     )
 
-    add_server_to_server_park(**host_info, server_park_definition=server_park_definition, new_server_definition=new_server)
+    add_server_to_server_park(
+        **host_info,
+        server_park_definition=server_park_definition,
+        new_server_definition=new_server
+    )
 
     assert requests_mock.last_request.scheme == host_info["protocol"]
     assert requests_mock.last_request.netloc == "%s:%i" % (
@@ -117,7 +120,9 @@ def test_add_server_to_server_park_api_call(host_info, requests_mock):
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_add_server_to_server_park_definition_operation_success(host_info, requests_mock):
+def test_add_server_to_server_park_definition_operation_success(
+    host_info, requests_mock
+):
     definition = operations["update-server-park-definition"]
 
     requests_mock.register_uri(
@@ -135,14 +140,20 @@ def test_add_server_to_server_park_definition_operation_success(host_info, reque
         text=mock_response_operation_success[0],
     )
 
-    status_code, message = add_server_to_server_park(**host_info, server_park_definition=server_park_definition, new_server_definition=new_server)
+    status_code, message = add_server_to_server_park(
+        **host_info,
+        server_park_definition=server_park_definition,
+        new_server_definition=new_server
+    )
 
     assert status_code == 200
     assert message is not None
 
 
 @pytest.mark.parametrize("host_info", host_infos)
-def test_add_server_to_server_park_definition_new_server_in_request_body(host_info, requests_mock):
+def test_add_server_to_server_park_definition_new_server_in_request_body(
+    host_info, requests_mock
+):
     definition = operations["update-server-park-definition"]
 
     requests_mock.register_uri(
@@ -160,7 +171,11 @@ def test_add_server_to_server_park_definition_new_server_in_request_body(host_in
         text=mock_response_operation_success[0],
     )
 
-    status_code, message = add_server_to_server_park(**host_info, server_park_definition=server_park_definition, new_server_definition=new_server)
+    status_code, message = add_server_to_server_park(
+        **host_info,
+        server_park_definition=server_park_definition,
+        new_server_definition=new_server
+    )
 
     assert status_code == 200
     assert message is not None
