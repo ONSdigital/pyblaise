@@ -1,4 +1,5 @@
 import logging
+import socket
 
 from .operations import (
     create_role,
