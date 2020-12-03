@@ -172,12 +172,17 @@ def update_server_type(protocol, host, port, token, new_server_type, master_host
     """
     update a server type
 
-    new_server_type: (slave)
+    new_server_type: (Slave)
     master_hostname: DNS resolvable name of the new master node
 
     sets the 'slave' mode on a node added to a server-park.
     Unsure if/how we change it back, what other types are,
     and if the master hostname is optional for non-slave types
+
+    NB: new_server_type is passed into the xml directly and is an enum
+    type in the underlying blaise API on the remote, the type is:
+        StatNeth.Blaise.Administer.DataContract.Deploy.ServerType
+    And it is case sensitive.
     """
     R = basic_soap_request(
         "update-server-type",
