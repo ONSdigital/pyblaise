@@ -27,3 +27,15 @@
   </s:Body>
 </s:Envelope>
 ```
+
+    + example invalid token response
+```xml
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <s:Fault>
+      <faultcode>s:access_token_invalid</faultcode>
+      <faultstring xml:lang="en-US">The provided access token is invalid.</faultstring>
+    </s:Fault>
+  </s:Body>
+</s:Envelope>
+```
