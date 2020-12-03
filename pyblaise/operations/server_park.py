@@ -206,7 +206,10 @@ def update_server_type(protocol, host, port, token, new_server_type, master_host
 
     if status_code == 99:
         # cannot change type on master node
-        logger.error("cannot change type on master for node '%s:%i' (new_type: '%s', master: '%s')" % (host, port, new_server_type, master_hostname))
+        logger.error(
+            "cannot change type on master for node '%s:%i' (new_type: '%s', master: '%s')"
+            % (host, port, new_server_type, master_hostname)
+        )
         return 405, message
 
     return R.status_code, message

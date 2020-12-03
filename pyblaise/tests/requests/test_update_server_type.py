@@ -47,6 +47,7 @@ mock_response_no_change_master = [
     """
 ]
 
+
 @pytest.mark.parametrize("host_info", host_infos)
 def test_update_server_type_api_call(host_info, requests_mock):
     definition = operations["update-server-type"]
@@ -123,7 +124,7 @@ def test_update_server_type_parse_response_no_change_master(host_info, requests_
                 "",
             )
         ),
-        status_code=200, # FIXME: not sure it is 500
+        status_code=200,  # FIXME: not sure it is 500
         headers=definition["headers"],
         text=mock_response_no_change_master[0],
     )
