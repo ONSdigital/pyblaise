@@ -124,8 +124,11 @@ def get_remote_defined_roles(
     """
     get the list of roles defined for the remote instance
 
+    connects to the management server (host) to get a list of roles
+    define on the slave node (remote_host).
+
     binding: (http|https)
-    remote_host: resolveable name of the remote host
+    remote_host: name of the remote host (resolvable by host)
     remote_port: management communication port on the remote (usually 8031)
     """
     R = basic_soap_request(
