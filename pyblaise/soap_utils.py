@@ -158,7 +158,7 @@ def __do_soap_request(uri, headers, payload, **kwargs):
     #        https://requests.readthedocs.io/en/master/api/#requests.Session.prepare_request
     R = request.prepare()
 
-    logger.debug(R.method, R.url, str(R.headers), str(R.body))
+    logger.debug("[%s] %s '%s', '%s'" % (R.method, R.url, str(R.headers), str(R.body)))
 
     try:
         Q = S.send(R)
