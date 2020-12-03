@@ -166,3 +166,37 @@ def update_server_park(protocol, host, port, token, server_park_definition):
     status_code = parse_response_for_tag_contents(results, "a:StatusCode")
 
     return R.status_code, message
+
+
+def update_server_type(protocol, host, port, token, new_server_type, master_hostname):
+    """
+    update a server type
+
+    new_server_type: (slave)
+    master_hostname: DNS resolvable name of the new master node
+
+    sets the 'slave' mode on a node added to a server-park.
+    Unsure if/how we change it back, what other types are,
+    and if the master hostname is optional for non-slave types
+    """
+    R = basic_soap_request(
+        "update-server-type",
+        protocol,
+        host,
+        port,
+        TOKEN=token,
+        NEW_TYPE=new_server_type,
+        MASTER_HOSTNAME=master_hostname
+    )
+    logger.debug(R.text)
+
+    has_tag = parse_response_for_tag(R.text, "UpdateServerTypeResponse")
+
+    if has_tag is False:
+        return R.status_code, False
+
+    results = parse_response_for_tag_contents(R.text, "UpdateServerTypeResult")
+    message = parse_response_for_tag_contents(results, "Message")
+    status_code = parse_response_for_tag_contents(results, "Statuscode")
+
+    return R.status_code, message

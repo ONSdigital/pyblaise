@@ -123,6 +123,13 @@ operations = {
             "SOAPAction": "http://www.blaise.com/deploy/2019/06/IDeployService/UpdateServerParkDefinition201906"
         },
     },
+    "update-server-type": {
+        "template": "update-server-type.xml.template",
+        "path": "/Blaise/Administer/Services/Deploy",
+        "headers": {
+            "SOAPAction": "http://www.blaise.com/deploy/2013/03/IDeployService/UpdateServerType"
+        },
+    },
 }
 
 default_headers = {

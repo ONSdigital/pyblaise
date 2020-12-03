@@ -1,0 +1,9 @@
+{% include "file-header.xml.template" %}
+{% include "auth-header.xml.template" %}
+<s:Body>
+  <UpdateServerType xmlns="http://www.blaise.com/deploy/2013/03">
+    <value>{{ NEW_TYPE }}</value>
+    <master>{{ MASTER_HOSTNAME }}</master>
+  </UpdateServerType>
+</s:Body>
+{% include "file-footer.xml.template" %}

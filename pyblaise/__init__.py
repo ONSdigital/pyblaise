@@ -18,6 +18,7 @@ from .operations import (
     remove_instrument,
     report_user_logout,
     update_server_park,
+    update_server_type
 )
 
 from .exceptions import *
