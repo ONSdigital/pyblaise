@@ -130,6 +130,9 @@ def __do_soap_request(uri, headers, payload, **kwargs):
     """
     send a payload to the endpoint
 
+    this function manages the direct connection to the endpoint
+    and response status code checking but no body parsing
+
     args:
       uri (str): endpoint of the service
       headers ({str: str}): map of headers to values
@@ -144,7 +147,8 @@ def __do_soap_request(uri, headers, payload, **kwargs):
       tuple(requests.response, requests.session)
 
     raises:
-      https://requests.readthedocs.io/en/latest/api/#exceptions
+      ServerConnectionTimeout, ServerConnectionError (as from https://requests.readthedocs.io/en/latest/api/#exceptions)
+
     """
     request = requests.Request("POST", uri, headers=headers, data=payload)
 
@@ -157,8 +161,13 @@ def __do_soap_request(uri, headers, payload, **kwargs):
     logger.debug(R.method, R.url, str(R.headers), str(R.body))
 
     try:
-        return S.send(R)
+        Q = S.send(R)
     except requests.Timeout as e:
         raise ServerConnectionTimeout from e
     except requests.ConnectionError as e:
         raise ServerConnectionError from e
+
+    if Q.status_code == 500:
+        raise ServerResponse500(R)
+
+    return Q

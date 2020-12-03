@@ -2,7 +2,7 @@ import pytest
 import requests
 
 from pyblaise.soap_utils import __do_soap_request
-from pyblaise.exceptions import ServerConnectionError, ServerConnectionTimeout
+from pyblaise.exceptions import ServerConnectionError, ServerConnectionTimeout, ServerResponse500
 
 host_infos = [
     {"uri": "http://my-host.com"},
@@ -66,6 +66,29 @@ def test__do_soap_request_raises_ServerConnectionTimeout_on_requests_ReadTimeout
 
     with pytest.raises(ServerConnectionTimeout):
         __do_soap_request(host_info["uri"], {}, {})
+
+
+@pytest.mark.parametrize("host_info", host_infos)
+def test__do_soap_request_raises_ServerResponse500_on_500_status_code(host_info, requests_mock):
+    requests_mock.register_uri("POST", host_info["uri"], status_code=500, text="OK")
+
+    with pytest.raises(ServerResponse500):
+        __do_soap_request(host_info["uri"], {}, {})
+
+
+@pytest.mark.parametrize("host_info", host_infos)
+def test__do_soap_request_raises_ServerResponse500_with_response_object(host_info, requests_mock):
+    requests_mock.register_uri("POST", host_info["uri"], status_code=500, text="my-response-text")
+
+    with pytest.raises(ServerResponse500) as e:
+        __do_soap_request(host_info["uri"], {}, {})
+
+        # FIXME: these aren't being checked for some reason
+        # https://docs.pytest.org/en/stable/assert.html#assertions-about-expected-exceptions
+        assert hasattr(e, "get_response_object")
+        assert e.get_response_object() is not None
+        assert isinstance(e.get_response_object(), flask.Response)
+        assert False is True # dummy assert doesn't fail
 
 
 @pytest.mark.parametrize("host_info", host_infos)

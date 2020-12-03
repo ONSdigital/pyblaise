@@ -8,6 +8,7 @@ from .operations import (
     get_all_users,
     get_all_server_parks,
     get_list_of_instruments,
+    get_remote_defined_roles,
     get_roles,
     get_server_park,
     get_server_version,
@@ -126,17 +127,26 @@ class Blaise:
         )
 
     def add_server_to_server_park(self, server_park_name, server_name):
-        """add an existing server to an existing server park"""
+        """
+        add an existing server to an existing server park
+
+        server_park_name: the name of the server park to which we add the node
+        server_name: the hostname of the node to add (must be DNS resolvable by the management server)
+
+        returns True on success, False otherwise
+        """
         import json
+
+        def hash_dict(D):
+            """hash a dict with md5"""
+            return md5(json.dumps(D, sort_keys=True)).hexdigest()
 
         # get the remote IP
         # FIXME: there is soap action: http://www.blaise.com/deploy/2013/03/IDeployService/GetIpAddresses
         #        which gets the ipv4 and ipv6 addresses (and I assume checks the mgmt server can connect)
         self.logger.debug("getting ipv4 and ipv6 address for '%s'" % server_name)
         remote_ipv4 = socket.gethostbyname(server_name)
-        remote_ipv6 = socket.getaddrinfo(server_name, remote_port, socket.AF_INET6)[0][
-            4
-        ][0]
+        remote_ipv6 = socket.getaddrinfo(server_name, remote_port)[0][4][0]
 
         # FIXME: where does remote_binding initially come from?
         remote_binding = "http"
@@ -151,10 +161,16 @@ class Blaise:
             remote_host=server_name,
             remote_port=remote_port
         )
+
+        assert status_code == 200, "get_remote_defined_roles failed"
         self.logger.debug(
             "get_remote_defined_roles '%s' returned [%i](%i roles)'%s'"
             % (server_name, status_code, len(roles), json.dumps(roles))
         )
+
+        if len(roles) == 0:
+            # FIXME: if there are no roles to add, we do nothing, what should we return to the caller?
+            return False
 
         # create the server definition
         # FIXME: we need to create a new server definition for each role defined on the remote
@@ -170,7 +186,7 @@ class Blaise:
             }
             for role in roles
         ]
-        self.logger.debug("created %i roles from remote" % (len(new_server_roles)))
+        self.logger.info("created %i roles from remote" % (len(new_server_roles)))
         self.logger.debug(json.dumps(new_server_roles))
 
         # get the existing server park definition
@@ -180,8 +196,17 @@ class Blaise:
             % (server_park_name, status_code, json.dumps(server_park_definition))
         )
 
+        # get the hash of the existing server park
+        existing_server_park_def_hash = hash_dict(server_park_definition)
+
         # update the definition with the new roles
         server_park_definition["servers"].append(new_server_roles)
+
+        self.logger.debug(json.dumps(server_park_definition, indent=2))
+
+        if existing_server_park_def_hash == hash_dict(server_park_definition):
+            logger.info("no change to server_park definition")
+            return False
 
         # update the server park
         status_code, message = update_server_park(
@@ -196,3 +221,4 @@ class Blaise:
 
         # FIXME: confirm the node is added to the server park by calling:
         #          http://www.blaise.com/deploy/2017/11/IDeployService/GetRemoteMasterAddress201711
+        return True
