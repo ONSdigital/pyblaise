@@ -145,6 +145,7 @@ class Blaise:
         def hash_dict(D):
             """hash a dict with md5"""
             from hashlib import md5
+
             return md5(json.dumps(D, sort_keys=True)).hexdigest()
 
         # FIXME: where does remote_binding initially come from?
