@@ -186,7 +186,7 @@ def update_server_type(protocol, host, port, token, new_server_type, master_host
         port,
         TOKEN=token,
         NEW_TYPE=new_server_type,
-        MASTER_HOSTNAME=master_hostname
+        MASTER_HOSTNAME=master_hostname,
     )
     logger.debug(R.text)
 
