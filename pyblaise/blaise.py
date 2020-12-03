@@ -156,7 +156,9 @@ class Blaise:
         #        which gets the ipv4 and ipv6 addresses (and I assume checks the mgmt server can connect)
         self.logger.debug("getting ipv4 and ipv6 address for '%s'" % server_name)
         remote_ipv4 = socket.gethostbyname(server_name)
-        remote_ipv6 = socket.getaddrinfo(server_name, remote_port)[0][4][0] # FIXME: this is not ipv6
+        remote_ipv6 = socket.getaddrinfo(server_name, remote_port)[0][4][
+            0
+        ]  # FIXME: this is not ipv6
 
         # get the remote ROLES
         status_code, roles = get_remote_defined_roles(
@@ -186,7 +188,7 @@ class Blaise:
                 "ip-v6": remote_ipv6,
                 "hostname": server_name,
                 "port": role["port"],
-                "roles": [role["name"]], # FIXME: we should have an array of roles here
+                "roles": [role["name"]],  # FIXME: we should have an array of roles here
             }
             for role in roles
         ]
@@ -228,7 +230,9 @@ class Blaise:
             R = e.get_request_object()
             self.logger.debug("%s %s %s" % (str(R.method), str(R.url), str(R.body)))
             Q = e.get_response_object()
-            self.logger.debug("%s %s %s" % (str(Q.status_code), str(Q.url), str(Q.text)))
+            self.logger.debug(
+                "%s %s %s" % (str(Q.status_code), str(Q.url), str(Q.text))
+            )
 
         # FIXME: confirm the node is added to the server park by calling:
         #          http://www.blaise.com/deploy/2017/11/IDeployService/GetRemoteMasterAddress201711
