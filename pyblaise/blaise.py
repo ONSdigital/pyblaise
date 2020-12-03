@@ -17,6 +17,8 @@ from .operations import (
     update_server_park,
 )
 
+from .exceptions import *
+
 
 class Blaise:
     """manage a connection to a blaise remote and perform soap actions.
@@ -29,6 +31,9 @@ class Blaise:
     """
 
     def __init__(self, protocol, host, port, username, password):
+        """
+        initialise a connection to a management server
+        """
         self.logger = logging.getLogger(__name__)
         self.open(protocol, host, port, username, password)
 
@@ -141,17 +146,17 @@ class Blaise:
             """hash a dict with md5"""
             return md5(json.dumps(D, sort_keys=True)).hexdigest()
 
+        # FIXME: where does remote_binding initially come from?
+        remote_binding = "http"
+        # FIXME: where does remote_port come from?
+        remote_port = 8031
+
         # get the remote IP
         # FIXME: there is soap action: http://www.blaise.com/deploy/2013/03/IDeployService/GetIpAddresses
         #        which gets the ipv4 and ipv6 addresses (and I assume checks the mgmt server can connect)
         self.logger.debug("getting ipv4 and ipv6 address for '%s'" % server_name)
         remote_ipv4 = socket.gethostbyname(server_name)
-        remote_ipv6 = socket.getaddrinfo(server_name, remote_port)[0][4][0]
-
-        # FIXME: where does remote_binding initially come from?
-        remote_binding = "http"
-        # FIXME: where does remote_port come from?
-        remote_port = 8031
+        remote_ipv6 = socket.getaddrinfo(server_name, remote_port)[0][4][0] # FIXME: this is not ipv6
 
         # get the remote ROLES
         status_code, roles = get_remote_defined_roles(
@@ -162,7 +167,6 @@ class Blaise:
             remote_port=remote_port
         )
 
-        assert status_code == 200, "get_remote_defined_roles failed"
         self.logger.debug(
             "get_remote_defined_roles '%s' returned [%i](%i roles)'%s'"
             % (server_name, status_code, len(roles), json.dumps(roles))
@@ -182,7 +186,7 @@ class Blaise:
                 "ip-v6": remote_ipv6,
                 "hostname": server_name,
                 "port": role["port"],
-                "roles": role["name"],
+                "roles": [role["name"]], # FIXME: we should have an array of roles here
             }
             for role in roles
         ]
@@ -200,7 +204,7 @@ class Blaise:
         existing_server_park_def_hash = hash_dict(server_park_definition)
 
         # update the definition with the new roles
-        server_park_definition["servers"].append(new_server_roles)
+        server_park_definition["servers"] += new_server_roles
 
         self.logger.debug(json.dumps(server_park_definition, indent=2))
 
@@ -209,15 +213,22 @@ class Blaise:
             return False
 
         # update the server park
-        status_code, message = update_server_park(
-            **self.connection_info,
-            token=self.token,
-            server_park_definition=server_park_definition
-        )
-        self.logger.debug(
-            "update_server_park '%s' returned: [%i]'%s'"
-            % (server_park_name, status_code, message)
-        )
+        try:
+            status_code, message = update_server_park(
+                **self.connection_info,
+                token=self.token,
+                server_park_definition=server_park_definition
+            )
+
+            self.logger.debug(
+                "update_server_park '%s' returned: [%i]'%s'"
+                % (server_park_name, status_code, message)
+            )
+        except ServerResponse500 as e:
+            R = e.get_request_object()
+            self.logger.debug("%s %s %s" % (str(R.method), str(R.url), str(R.body)))
+            Q = e.get_response_object()
+            self.logger.debug("%s %s %s" % (str(Q.status_code), str(Q.url), str(Q.text)))
 
         # FIXME: confirm the node is added to the server park by calling:
         #          http://www.blaise.com/deploy/2017/11/IDeployService/GetRemoteMasterAddress201711

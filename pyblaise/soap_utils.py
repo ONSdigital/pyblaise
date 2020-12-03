@@ -168,6 +168,7 @@ def __do_soap_request(uri, headers, payload, **kwargs):
         raise ServerConnectionError from e
 
     if Q.status_code == 500:
-        raise ServerResponse500(R)
+        logger.debug("[%s] '%s' '%s'" % (Q.status_code, Q.text, str(Q.headers)))
+        raise ServerResponse500(R, Q)
 
     return Q

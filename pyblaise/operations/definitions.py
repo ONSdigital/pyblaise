@@ -2,6 +2,12 @@
 definitions of operations
 
 mapping functions to SOAP calls/templates/HTTP headers
+
+NOTE: if the header is send to the wrong path, the server will respond with 500.
+It seems that Security or SecurityManagementService paths will have a SOAPAction
+containing 'security', whereas paths ending in 'Deploy' will have a SOAPAction
+containing 'deploy'. This is a useful sanity check for 500 errors when you forgot
+to capture the request path.
 """
 
 operations = {
@@ -105,7 +111,7 @@ operations = {
     },
     "get-remote-defined-roles": {
         "template": "get-remote-defined-roles.xml.template",
-        "path": "/Blaise/Security/Services/SecurityManagementService",
+        "path": "/Blaise/Administer/Services/Deploy",
         "headers": {
             "SOAPAction": "http://www.blaise.com/deploy/2017/11/IDeployService/GetRemoteDefinedRoles201711"
         },
